@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golf Club TV — The next screen for golf creators</title>
+<meta name="description" content="Golf Club TV brings the world's most engaging golf creators to television audiences. Launching soon in Italy.">
+<meta property="og:title" content="Golf Club TV — The next screen for golf creators">
+<meta property="og:description" content="A new golf entertainment network bringing creator-led golf to television. Launching soon in Italy.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#08130f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='24' y='4' rx='6' fill='%23c6f25e'/%3E%3Cpath d='M13 10.5v11l9-5.5z' fill='%2308130f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08130f;
+    --bg-2: #0c1c16;
+    --card: #10241c;
+    --card-2: #133024;
+    --line: #1f3d30;
+    --line-strong: #2d5a45;
+    --text: #eef5ef;
+    --muted: #a3b8ac;
+    --dim: #6f877a;
+    --lime: #c6f25e;
+    --lime-ink: #08130f;
+    --radius: 18px;
+    --max: 1180px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(8, 19, 15, .82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s;
+  }
+  .nav.scrolled { border-bottom-color: var(--line); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .brand-mark { width: 40px; height: 30px; border-radius: 8px; background: var(--lime); display: grid; place-items: center; flex: none; }
+  .brand-mark svg { width: 14px; height: 14px; }
+  .brand-sep { width: 1px; height: 26px; background: var(--line-strong); }
+  .brand-name { font-weight: 700; letter-spacing: .22em; font-size: 15px; white-space: nowrap; }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .lang { display: flex; border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px; }
+  .lang button {
+    font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .08em;
+    background: none; border: 0; color: var(--muted); padding: 6px 10px; border-radius: 999px; cursor: pointer;
+  }
+  .lang button[aria-pressed="true"] { background: var(--card-2); color: var(--lime); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font: inherit; font-weight: 700; font-size: 15px;
+    padding: 14px 22px; border-radius: 999px; text-decoration: none; cursor: pointer;
+    border: 1px solid transparent; transition: transform .15s, box-shadow .2s, background .2s;
+  }
+  .btn-primary { background: var(--lime); color: var(--lime-ink); box-shadow: 0 0 0 0 rgba(198,242,94,.0); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 40px -10px rgba(198,242,94,.55); }
+  .btn-ghost { border-color: var(--line-strong); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
+  .btn-sm { padding: 10px 16px; font-size: 14px; }
+
+  /* ---------- Shared ---------- */
+  .pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 16px; border-radius: 999px;
+    background: var(--card); border: 1px solid var(--line-strong);
+    color: var(--lime); font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 0 rgba(198,242,94,.7); animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(198,242,94,.6); } 70% { box-shadow: 0 0 0 10px rgba(198,242,94,0); } 100% { box-shadow: 0 0 0 0 rgba(198,242,94,0); } }
+  .eyebrow { color: var(--dim); font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; margin: 0 0 18px; }
+  h1, h2, h3 { margin: 0; line-height: 1.04; letter-spacing: -.02em; }
+  h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; text-transform: uppercase; }
+  .lime { color: var(--lime); }
+  .lede { color: var(--muted); font-size: clamp(17px, 1.6vw, 20px); max-width: 760px; margin: 22px 0 0; }
+  section { padding: 110px 0; }
+  .section-head { margin-bottom: 48px; }
+
+  .card {
+    background: linear-gradient(180deg, var(--card) 0%, var(--bg-2) 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+  .card.hl { border-color: rgba(198,242,94,.55); box-shadow: inset 0 0 0 1px rgba(198,242,94,.08); }
+  .num { color: var(--lime); font-weight: 700; font-size: 15px; letter-spacing: .04em; }
+  .card h3 { font-size: 20px; text-transform: uppercase; margin: 14px 0 10px; letter-spacing: .01em; }
+  .card p { margin: 0; color: var(--muted); font-size: 16px; }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; padding: 70px 0 110px; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: auto -20% -55% 20%; height: 120%;
+    background: radial-gradient(closest-side, rgba(198,242,94,.13), transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: ""; position: absolute; right: -25%; bottom: -40%; width: 75%; height: 80%;
+    border-top: 2px solid rgba(198,242,94,.3); border-radius: 50%;
+    transform: rotate(-12deg); filter: blur(.4px);
+    pointer-events: none;
+  }
+  .hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+  .hero h1 { font-size: clamp(42px, 5.6vw, 76px); font-weight: 800; margin-top: 26px; }
+  .hero h1 .small { display: block; font-size: .5em; letter-spacing: .02em; margin-bottom: 14px; text-transform: uppercase; }
+  .rule { width: 72px; height: 5px; background: var(--lime); border-radius: 3px; margin: 30px 0 24px; }
+  .hero .lede { margin-top: 0; max-width: 520px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+  .tagline { margin-top: 40px; display: inline-flex; align-items: center; gap: 14px; color: var(--lime); font-weight: 700; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; }
+  .tagline::before { content: ""; width: 28px; height: 1px; background: var(--lime); }
+
+  /* TV mock */
+  .tv-stack { position: relative; perspective: 1400px; }
+  .tv {
+    position: relative; border-radius: 22px; overflow: hidden;
+    border: 2px solid rgba(198,242,94,.85);
+    box-shadow: 0 0 0 1px rgba(198,242,94,.25), 0 0 60px -6px rgba(198,242,94,.45), 0 40px 80px -30px rgba(0,0,0,.8);
+    transform: rotateY(-9deg) rotateX(3deg);
+    aspect-ratio: 16 / 10;
+    background: #0b1d15;
+  }
+  .tv svg.scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .tv .badge {
+    position: absolute; top: 18px; left: 18px;
+    background: rgba(8,19,15,.75); border: 1px solid var(--line-strong);
+    color: var(--lime); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    padding: 7px 12px; border-radius: 999px;
+  }
+  .tv .title { position: absolute; left: 22px; top: 62px; font-weight: 800; font-size: clamp(18px, 2.4vw, 28px); line-height: 1.02; text-transform: uppercase; text-shadow: 0 2px 20px rgba(0,0,0,.6); }
+  .tv .play {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(8,19,15,.55); border: 2px solid rgba(255,255,255,.8);
+    display: grid; place-items: center; backdrop-filter: blur(4px);
+  }
+  .tv .controls { position: absolute; left: 20px; right: 20px; bottom: 16px; display: flex; align-items: center; gap: 14px; }
+  .tv .bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,.25); position: relative; }
+  .tv .bar i { position: absolute; inset: 0 55% 0 0; background: var(--lime); border-radius: 2px; animation: progress 9s ease-in-out infinite alternate; }
+  .tv .bar i::after { content: ""; position: absolute; right: -7px; top: -5px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+  @keyframes progress { from { right: 70%; } to { right: 30%; } }
+  .tv .cc { font-size: 10px; font-weight: 800; border: 1.5px solid #fff; border-radius: 4px; padding: 1px 4px; }
+
+  .upnext {
+    position: absolute; right: -18px; bottom: -46px; width: 250px;
+    background: rgba(12,28,22,.94); border: 1px solid var(--line-strong); border-radius: 16px;
+    padding: 18px 20px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.8);
+    backdrop-filter: blur(8px);
+  }
+  .upnext .eyebrow { color: var(--lime); margin-bottom: 10px; font-size: 11px; }
+  .upnext ul { list-style: none; margin: 0; padding: 0; }
+  .upnext li { display: flex; gap: 14px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; font-weight: 600; }
+  .upnext li:first-child { border-top: 0; }
+  .upnext time { color: var(--lime); font-variant-numeric: tabular-nums; font-weight: 700; }
+
+  /* ---------- Audience ---------- */
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .duo .card { display: flex; gap: 24px; align-items: flex-start; padding: 32px; }
+  .icon {
+    flex: none; width: 56px; height: 56px; border-radius: 14px;
+    background: var(--card-2); border: 1px solid var(--line-strong);
+    display: grid; place-items: center; color: var(--lime);
+  }
+  .icon svg { width: 26px; height: 26px; }
+  .duo h3 { color: var(--lime); margin-top: 4px; }
+  .callout {
+    margin-top: 26px; display: flex; gap: 14px; align-items: center;
+    color: var(--lime); font-weight: 700; font-size: 17px;
+  }
+  .callout::before { content: ""; width: 18px; height: 4px; background: var(--lime); border-radius: 2px; flex: none; }
+
+  /* ---------- Bridge ---------- */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: s; }
+  .steps .card { position: relative; }
+  .steps .card:not(:last-child)::after {
+    content: ""; position: absolute; right: -14px; top: 50%; width: 10px; height: 10px;
+    border-top: 2px solid var(--lime); border-right: 2px solid var(--lime);
+    transform: translateY(-50%) rotate(45deg); z-index: 1;
+  }
+
+  /* ---------- Programming ---------- */
+  .shows { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  .show { display: grid; grid-template-columns: 170px 1fr; gap: 24px; align-items: center; padding: 18px; }
+  .thumb { aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--line-strong); }
+  .thumb svg { width: 100%; height: 100%; display: block; }
+  .thumb .p { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 38px; height: 38px; border-radius: 50%; border: 2px solid #fff; background: rgba(8,19,15,.5); display: grid; place-items: center; }
+  .show h3 { margin-top: 8px; }
+  .note { color: var(--dim); font-size: 13px; margin-top: 22px; }
+
+  /* ---------- Creators ---------- */
+  .creators { background: linear-gradient(180deg, var(--bg) 0%, #0b1a14 100%); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .benefit { display: flex; gap: 16px; padding: 24px; }
+  .benefit .bar { flex: none; width: 5px; border-radius: 3px; background: var(--lime); }
+  .benefit h3 { margin: 0 0 8px; font-size: 17px; color: var(--lime); }
+
+  /* ---------- Roadmap ---------- */
+  .road { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .road .card { position: relative; }
+  .status { margin-top: 18px; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
+  .road .card.hl .status { color: var(--lime); }
+  .banner {
+    margin-top: 22px; padding: 18px 24px; border-radius: 14px;
+    background: var(--card); border: 1px solid var(--line-strong);
+    color: var(--lime); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: 14px;
+  }
+
+  /* ---------- CTA ---------- */
+  .cta { position: relative; overflow: hidden; }
+  .cta .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; }
+  .cta h2 { font-size: clamp(36px, 5.4vw, 64px); }
+  .cta h2 + h2 { margin-top: 26px; }
+  .ball { position: relative; aspect-ratio: 1; max-width: 420px; justify-self: center; width: 100%; }
+  .ball svg { width: 100%; height: 100%; display: block; }
+  .cta-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 34px 0 44px; color: var(--dim); font-size: 13px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; align-items: center; }
+  footer .label { letter-spacing: .22em; font-weight: 700; text-transform: uppercase; }
+
+  /* ---------- Reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .dot, .tv .bar i { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px) {
+    .hero .wrap, .cta .wrap { grid-template-columns: 1fr; }
+    .tv-stack { margin: 10px 8px 60px; }
+    .tv { transform: none; }
+    .upnext { right: 8px; bottom: -50px; width: 220px; }
+    .steps { grid-template-columns: repeat(2, 1fr); }
+    .steps .card::after { display: none; }
+    .benefits { grid-template-columns: repeat(2, 1fr); }
+    .ball { max-width: 300px; }
+  }
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    section { padding: 80px 0; }
+    .wrap { padding: 0 16px; }
+    .duo, .shows, .road, .benefits { grid-template-columns: 1fr; }
+    .show { grid-template-columns: 110px 1fr; gap: 16px; padding: 14px; }
+    .duo .card { flex-direction: column; gap: 16px; padding: 24px; }
+    .brand-name { font-size: 13px; letter-spacing: .16em; }
+    .brand-sep { display: none; }
+    .nav .btn { display: none; }
+    .hero { padding-top: 40px; }
+    .hero::after { display: none; }
+  }
+  @media (max-width: 480px) {
+    .steps { grid-template-columns: 1fr; }
+    .upnext { position: relative; right: auto; bottom: auto; width: 100%; margin-top: 16px; }
+    .tv-stack { margin: 10px 0 0; }
+    .tv .title { font-size: 17px; top: 56px; }
+    .tv .play { width: 50px; height: 50px; }
+    .hero-cta .btn { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Golf Club TV">
+      <span class="brand-mark"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 1v12l11-6z" fill="#08130f"/></svg></span>
+      <span class="brand-sep"></span>
+      <span class="brand-name">GOLF CLUB TV</span>
+    </a>
+    <div class="nav-right">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="it" aria-pressed="false">IT</button>
+      </div>
+      <a class="btn btn-primary btn-sm js-contact" href="#contact" data-i18n="nav.cta">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="pill"><span class="dot"></span><span data-i18n="hero.pill">Coming soon · Launching in Italy</span></span>
+        <h1>
+          <span class="small">Golf Club TV</span>
+          <span data-i18n="hero.h1a">The next screen</span><br>
+          <span class="lime" data-i18n="hero.h1b">for golf creators.</span>
+        </h1>
+        <div class="rule"></div>
+        <p class="lede" data-i18n="hero.lede">A new golf entertainment network bringing the world's most engaging golf creators to television audiences.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary js-contact" href="#contact" data-i18n="hero.cta1">Become a founding creator</a>
+          <a class="btn btn-ghost" href="#how" data-i18n="hero.cta2">How it works</a>
+        </div>
+        <div class="tagline" data-i18n="hero.tag">A new golf entertainment network</div>
+      </div>
+
+      <div class="tv-stack reveal" aria-hidden="true">
+        <div class="tv">
+          <svg class="scene" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#0c2018"/>
+                <stop offset="1" stop-color="#1d4a2f"/>
+              </linearGradient>
+              <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#2f7a3d"/>
+                <stop offset="1" stop-color="#174d26"/>
+              </linearGradient>
+              <radialGradient id="glow" cx=".5" cy=".45" r=".6">
+                <stop offset="0" stop-color="#c6f25e" stop-opacity=".22"/>
+                <stop offset="1" stop-color="#c6f25e" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="vig" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#08130f" stop-opacity=".85"/>
+                <stop offset=".45" stop-color="#08130f" stop-opacity=".1"/>
+                <stop offset="1" stop-color="#08130f" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <rect width="640" height="400" fill="url(#sky)"/>
+            <path d="M0 175 q20-22 40-6 q18-26 42-6 q20-20 40-2 q22-24 46-4 q18-18 38 0 q24-26 48-4 q20-20 42 0 q22-24 44-2 q18-20 40 0 q24-22 46 0 q20-24 42-2 q22-20 44 0 q20-22 42 0 q18-16 36 2 L640 200 L0 200z" fill="#0d2a1b"/>
+            <rect y="190" width="640" height="210" fill="url(#grass)"/>
+            <g fill="#3c9a4c" opacity=".55">
+              <path d="M320 200 L120 400 L190 400z"/>
+              <path d="M320 200 L260 400 L330 400z"/>
+              <path d="M320 200 L400 400 L470 400z"/>
+              <path d="M320 200 L540 400 L610 400z"/>
+              <path d="M320 200 L0 330 L0 380z"/>
+              <path d="M320 200 L640 330 L640 380z"/>
+            </g>
+            <ellipse cx="320" cy="250" rx="300" ry="160" fill="url(#glow)"/>
+            <ellipse cx="530" cy="318" rx="100" ry="38" fill="#c8b98a"/>
+            <ellipse cx="530" cy="318" rx="84" ry="29" fill="#ad9d6e"/>
+            <line x1="342" y1="122" x2="342" y2="212" stroke="#eef5ef" stroke-width="3"/>
+            <path d="M344 123 L384 134 L344 146z" fill="#c6f25e"/>
+            <ellipse cx="342" cy="213" rx="7" ry="2.5" fill="#0d2a1b"/>
+            <path d="M350 240 L470 290" stroke="#0d2a1b" stroke-width="2" opacity=".6"/>
+            <rect width="640" height="400" fill="url(#vig)"/>
+          </svg>
+          <span class="badge" data-i18n="tv.badge">Tonight · 9:00 PM</span>
+          <div class="title" data-i18n-html="tv.title">Creator<br>Golf Night</div>
+          <div class="play"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M6 3v16l13-8z" fill="#fff"/></svg></div>
+          <div class="controls">
+            <svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 1v12l10-6z" fill="#fff"/></svg>
+            <div class="bar"><i></i></div>
+            <span class="cc">CC</span>
+          </div>
+        </div>
+        <div class="upnext">
+          <p class="eyebrow" data-i18n="tv.upnext">Up next</p>
+          <ul>
+            <li><time>21:00</time><span>Creator Golf Night</span></li>
+            <li><time>22:00</time><span>The 19th Hole</span></li>
+            <li><time>23:00</time><span>Beyond the Course</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIENCE -->
+  <section id="opportunity">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="aud.eyebrow">The opportunity</p>
+        <h2><span data-i18n="aud.h2a">You've built an audience.</span><br><span class="lime" data-i18n="aud.h2b">There's another one to reach.</span></h2>
+        <p class="lede" data-i18n="aud.lede">Many golf fans still turn to television for their entertainment — and may never have discovered creator-led golf on YouTube.</p>
+      </div>
+      <div class="duo">
+        <div class="card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg></div>
+          <div>
+            <h3 data-i18n="aud.c1t">Your online community</h3>
+            <p data-i18n="aud.c1p">An audience that knows your personality, recognises your formats and comes back for more.</p>
+          </div>
+        </div>
+        <div class="card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <div>
+            <h3 data-i18n="aud.c2t">The TV golf audience</h3>
+            <p data-i18n="aud.c2p">Viewers who love the same sport, but may not look for creator-led golf online.</p>
+          </div>
+        </div>
+      </div>
+      <p class="callout reveal" data-i18n="aud.callout">The opportunity isn't to replace the audience you've built. It's to reach beyond it.</p>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="how.eyebrow">How the content travels</p>
+        <h2><span data-i18n="how.h2a">Same great videos.</span><br><span class="lime" data-i18n="how.h2b">Built for a new audience.</span></h2>
+        <p class="lede" data-i18n="how.lede">Not just an online video on TV. We add the context, language and programming that make each story easy to follow.</p>
+      </div>
+      <div class="steps">
+        <div class="card reveal"><span class="num">01</span><h3 data-i18n="how.s1t">Select</h3><p data-i18n="how.s1p">Existing standout videos, chosen together.</p></div>
+        <div class="card reveal"><span class="num">02</span><h3 data-i18n="how.s2t">Introduce</h3><p data-i18n="how.s2p">Context for viewers meeting you for the first time.</p></div>
+        <div class="card reveal"><span class="num">03</span><h3 data-i18n="how.s3t">Localize</h3><p data-i18n="how.s3p">Approved subtitles or dubbing.</p></div>
+        <div class="card reveal hl"><span class="num">04</span><h3 data-i18n="how.s4t">Program</h3><p data-i18n="how.s4p">Curated broadcast slots on the channel.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMMING -->
+  <section id="programming">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="prog.eyebrow">The programming</p>
+        <h2><span data-i18n="prog.h2a">A channel with</span><br><span class="lime" data-i18n="prog.h2b">a point of view.</span></h2>
+        <p class="lede" data-i18n="prog.lede">Not a playlist. A curated line-up people can discover, follow and return to.</p>
+      </div>
+      <div class="shows">
+        <div class="card show reveal">
+          <div class="thumb">
+            <svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMid slice"><rect width="120" height="90" fill="#1d4a2f"/><rect y="52" width="120" height="38" fill="#2f7a3d"/><circle cx="96" cy="20" r="26" fill="#c6f25e" opacity=".15"/><rect x="34" y="30" width="44" height="30" rx="4" fill="#0b1712"/><rect x="38" y="34" width="28" height="20" rx="2" fill="#3c9a4c"/><circle cx="72" cy="44" r="5" fill="#1f3d30"/><rect x="54" y="60" width="4" height="22" fill="#0b1712"/></svg>
+            <span class="p"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#fff"/></svg></span>
+          </div>
+          <div><span class="num">01</span><h3>Creator Nights</h3><p data-i18n="prog.s1p">The strongest long-form golf creator episodes.</p></div>
+        </div>
+        <div class="card show reveal">
+          <div class="thumb">
+            <svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMid slice"><rect width="120" height="90" fill="#16402a"/><path d="M0 60 Q60 40 120 60 V90 H0z" fill="#2f7a3d"/><circle cx="60" cy="36" r="14" fill="#c6f25e" opacity=".85"/><path d="M38 70 L82 70 L70 54 L50 54z" fill="#0b1712" opacity=".55"/><text x="60" y="41" font-family="Inter,sans-serif" font-size="13" font-weight="800" text-anchor="middle" fill="#08130f">VS</text></svg>
+            <span class="p"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#fff"/></svg></span>
+          </div>
+          <div><span class="num">02</span><h3>Big Matches</h3><p data-i18n="prog.s2p">Pros, amateurs and compelling head-to-heads.</p></div>
+        </div>
+        <div class="card show reveal">
+          <div class="thumb">
+            <svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMid slice"><rect width="120" height="90" fill="#1a2a22"/><rect x="34" y="12" width="52" height="34" rx="3" fill="#0f3a24" stroke="#c6f25e" stroke-width="1"/><text x="60" y="27" font-family="Inter,sans-serif" font-size="7" font-weight="800" text-anchor="middle" fill="#eef5ef">THE</text><text x="60" y="38" font-family="Inter,sans-serif" font-size="9" font-weight="800" text-anchor="middle" fill="#eef5ef">19TH HOLE</text><rect y="66" width="120" height="24" fill="#2a3a32"/><circle cx="22" cy="58" r="9" fill="#a3b8ac"/><circle cx="60" cy="58" r="9" fill="#eef5ef"/><circle cx="98" cy="58" r="9" fill="#a3b8ac"/></svg>
+            <span class="p"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#fff"/></svg></span>
+          </div>
+          <div><span class="num">03</span><h3>The 19th Hole</h3><p data-i18n="prog.s3p">Our original discussion show, built around golf.</p></div>
+        </div>
+        <div class="card show reveal">
+          <div class="thumb">
+            <svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMid slice"><rect width="120" height="90" fill="#13361f"/><rect y="58" width="120" height="32" fill="#2f7a3d"/><circle cx="60" cy="40" r="16" fill="#eef5ef"/><g fill="#c9d4cc"><circle cx="54" cy="34" r="1.6"/><circle cx="60" cy="32" r="1.6"/><circle cx="66" cy="34" r="1.6"/><circle cx="52" cy="41" r="1.6"/><circle cx="58" cy="40" r="1.6"/><circle cx="64" cy="40" r="1.6"/><circle cx="70" cy="42" r="1.6"/><circle cx="56" cy="47" r="1.6"/><circle cx="62" cy="47" r="1.6"/></g><path d="M56 56 h8 l-2 12 h-4z" fill="#d9b44a"/></svg>
+            <span class="p"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#fff"/></svg></span>
+          </div>
+          <div><span class="num">04</span><h3>Beyond the Course</h3><p data-i18n="prog.s4p">Courses, personalities and stories beyond the scorecard.</p></div>
+        </div>
+      </div>
+      <p class="note reveal" data-i18n="prog.note">Illustrative programming — line-up will be confirmed ahead of launch.</p>
+    </div>
+  </section>
+
+  <!-- FOR CREATORS -->
+  <section class="creators" id="creators">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="cr.eyebrow">For creators</p>
+        <h2><span data-i18n="cr.h2a">You keep creating.</span><br><span class="lime" data-i18n="cr.h2b">We handle the TV side.</span></h2>
+        <p class="lede" data-i18n="cr.lede">No new episodes to film. No second channel to run. Your online presence stays yours — we handle the television experience.</p>
+      </div>
+      <div class="benefits">
+        <div class="card benefit reveal"><span class="bar"></span><div><h3 data-i18n="cr.b1t">New audience</h3><p data-i18n="cr.b1p">Reach TV viewers who may not know creator-led golf yet.</p></div></div>
+        <div class="card benefit reveal"><span class="bar"></span><div><h3 data-i18n="cr.b2t">New revenue</h3><p data-i18n="cr.b2p">Incremental income from content you've already made.</p></div></div>
+        <div class="card benefit reveal"><span class="bar"></span><div><h3 data-i18n="cr.b3t">No extra production</h3><p data-i18n="cr.b3p">No need to create new videos to take part.</p></div></div>
+        <div class="card benefit reveal"><span class="bar"></span><div><h3 data-i18n="cr.b4t">Non-exclusive</h3><p data-i18n="cr.b4p">Your channel and existing business remain yours.</p></div></div>
+        <div class="card benefit reveal"><span class="bar"></span><div><h3 data-i18n="cr.b5t">You stay in control</h3><p data-i18n="cr.b5p">Localization, packaging and scheduling agreed with you.</p></div></div>
+        <div class="card benefit reveal"><span class="bar"></span><div><h3 data-i18n="cr.b6t">New sponsors</h3><p data-i18n="cr.b6p">Additional brand opportunities around TV distribution.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="road.eyebrow">The ambition</p>
+        <h2><span data-i18n="road.h2a">Start in Italy.</span><br><span class="lime" data-i18n="road.h2b">Designed to grow.</span></h2>
+        <p class="lede" data-i18n="road.lede">One new audience first. Then a repeatable model for bringing creator-led golf to other TV markets.</p>
+      </div>
+      <div class="road">
+        <div class="card hl reveal"><span class="num">01</span><h3 data-i18n="road.s1t">Italian pilot</h3><p data-i18n="road.s1p">Validate the concept with licensed creator content and initial viewers.</p><span class="status"><span class="dot"></span><span data-i18n="road.now">In preparation</span></span></div>
+        <div class="card reveal"><span class="num">02</span><h3 data-i18n="road.s2t">The playbook</h3><p data-i18n="road.s2p">A repeatable process for localization, programming and sales.</p><span class="status" data-i18n="road.next">Next</span></div>
+        <div class="card reveal"><span class="num">03</span><h3 data-i18n="road.s3t">European scale</h3><p data-i18n="road.s3p">Other markets after proof — with separately agreed rights.</p><span class="status" data-i18n="road.later">Later</span></div>
+      </div>
+      <div class="banner reveal" data-i18n="road.banner">A big vision, built one market and one partnership at a time.</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="pill" data-i18n="cta.pill">Founding creator invitation</span>
+        <h2 style="margin-top:28px"><span data-i18n-html="cta.h2a">Your next audience<br>is already watching.</span></h2>
+        <h2 class="lime"><span data-i18n-html="cta.h2b">Let's meet them<br>on their screen.</span></h2>
+        <p class="lede" data-i18n="cta.lede">We're opening a small number of founding creator partnerships, starting with a small, non-exclusive pilot. If you'd like to be part of it, let's talk.</p>
+        <div class="cta-actions">
+          <a class="btn btn-primary js-contact" href="#contact" data-i18n="cta.btn">Get in touch</a>
+        </div>
+      </div>
+      <div class="ball reveal" aria-hidden="true">
+        <svg viewBox="0 0 400 400">
+          <defs>
+            <radialGradient id="bg1" cx=".38" cy=".38" r=".75">
+              <stop offset="0" stop-color="#e3fb9c"/>
+              <stop offset=".55" stop-color="#9dd16a"/>
+              <stop offset="1" stop-color="#2f6d3a"/>
+            </radialGradient>
+            <radialGradient id="halo" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#c6f25e" stop-opacity=".25"/>
+              <stop offset="1" stop-color="#c6f25e" stop-opacity="0"/>
+            </radialGradient>
+            <clipPath id="bc"><circle cx="200" cy="190" r="150"/></clipPath>
+          </defs>
+          <circle cx="200" cy="200" r="200" fill="url(#halo)"/>
+          <ellipse cx="200" cy="350" rx="170" ry="26" fill="#000" opacity=".45"/>
+          <circle cx="200" cy="190" r="150" fill="url(#bg1)"/>
+          <g clip-path="url(#bc)" fill="#1f5a2f" opacity=".35" id="dimples"></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="label">Golf Club TV · <span data-i18n="foot.label">Founding creator invitation</span></span>
+    <span data-i18n="foot.note">Illustrative concept — programming, terms and distribution are subject to individual agreement.</span>
+    <span>© <span id="year"></span> Golf Club TV</span>
+  </div>
+</footer>
+
+<script>
+  // ---- Contact: set the address creators should write to ----
+  var CONTACT_EMAIL = "hello@example.com";
+  var CONTACT_SUBJECT = "Golf Club TV — Founding creator";
+
+  document.querySelectorAll(".js-contact").forEach(function (a) {
+    a.href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(CONTACT_SUBJECT);
+  });
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Golf ball dimples
+  (function () {
+    var g = document.getElementById("dimples"), ns = "http://www.w3.org/2000/svg";
+    for (var y = 50; y <= 340; y += 26) {
+      var off = ((y / 26) % 2) * 13;
+      for (var x = 40 + off; x <= 370; x += 26) {
+        var dx = x - 200, dy = y - 190, d = Math.sqrt(dx * dx + dy * dy);
+        if (d > 160) continue;
+        var s = Math.max(.35, 1 - (d / 170) * .6);
+        var c = document.createElementNS(ns, "ellipse");
+        c.setAttribute("cx", x); c.setAttribute("cy", y);
+        c.setAttribute("rx", 8 * s); c.setAttribute("ry", 7 * s);
+        g.appendChild(c);
+      }
+    }
+  })();
+
+  // Sticky nav border
+  var nav = document.getElementById("nav");
+  addEventListener("scroll", function () { nav.classList.toggle("scrolled", scrollY > 8); }, { passive: true });
+
+  // Reveal on scroll
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: .12 });
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+  }
+
+  // ---- i18n ----
+  var IT = {
+    "nav.cta": "Contattaci",
+    "hero.pill": "In arrivo · Lancio in Italia",
+    "hero.h1a": "Il nuovo schermo",
+    "hero.h1b": "per i golf creator.",
+    "hero.lede": "Un nuovo network di intrattenimento golfistico che porta i golf creator più coinvolgenti al pubblico televisivo.",
+    "hero.cta1": "Diventa founding creator",
+    "hero.cta2": "Come funziona",
+    "hero.tag": "Un nuovo network di golf entertainment",
+    "tv.badge": "Stasera · 21:00",
+    "tv.title": "Creator<br>Golf Night",
+    "tv.upnext": "A seguire",
+    "aud.eyebrow": "L'opportunità",
+    "aud.h2a": "Hai costruito un pubblico.",
+    "aud.h2b": "Ce n'è un altro da raggiungere.",
+    "aud.lede": "Molti appassionati di golf guardano ancora la televisione per il proprio intrattenimento — e forse non hanno mai scoperto il golf dei creator su YouTube.",
+    "aud.c1t": "La tua community online",
+    "aud.c1p": "Un pubblico che conosce la tua personalità, riconosce i tuoi format e torna a guardarti.",
+    "aud.c2t": "Il pubblico del golf in TV",
+    "aud.c2p": "Spettatori che amano lo stesso sport, ma che non cercano il golf dei creator online.",
+    "aud.callout": "L'obiettivo non è sostituire il pubblico che hai costruito. È andare oltre.",
+    "how.eyebrow": "Come viaggiano i contenuti",
+    "how.h2a": "Gli stessi grandi video.",
+    "how.h2b": "Pensati per un nuovo pubblico.",
+    "how.lede": "Non solo un video online in TV. Aggiungiamo il contesto, la lingua e la programmazione che rendono ogni storia facile da seguire.",
+    "how.s1t": "Selezione",
+    "how.s1p": "I tuoi video migliori già pubblicati, scelti insieme.",
+    "how.s2t": "Introduzione",
+    "how.s2p": "Il contesto per chi ti scopre per la prima volta.",
+    "how.s3t": "Localizzazione",
+    "how.s3p": "Sottotitoli o doppiaggio approvati.",
+    "how.s4t": "Programmazione",
+    "how.s4p": "Slot curati nel palinsesto del canale.",
+    "prog.eyebrow": "La programmazione",
+    "prog.h2a": "Un canale con",
+    "prog.h2b": "un punto di vista.",
+    "prog.lede": "Non una playlist. Un palinsesto curato da scoprire, seguire e ritrovare.",
+    "prog.s1p": "I migliori episodi long-form dei golf creator.",
+    "prog.s2p": "Professionisti, amateur e sfide testa a testa.",
+    "prog.s3p": "Il nostro talk show originale, tutto dedicato al golf.",
+    "prog.s4p": "Campi, personaggi e storie oltre lo score.",
+    "prog.note": "Programmazione illustrativa — il palinsesto sarà confermato prima del lancio.",
+    "cr.eyebrow": "Per i creator",
+    "cr.h2a": "Tu continui a creare.",
+    "cr.h2b": "Noi pensiamo alla TV.",
+    "cr.lede": "Nessun nuovo episodio da girare. Nessun secondo canale da gestire. La tua presenza online resta tua — all'esperienza televisiva pensiamo noi.",
+    "cr.b1t": "Nuovo pubblico",
+    "cr.b1p": "Raggiungi spettatori TV che ancora non conoscono il golf dei creator.",
+    "cr.b2t": "Nuovi ricavi",
+    "cr.b2p": "Entrate aggiuntive da contenuti che hai già realizzato.",
+    "cr.b3t": "Nessuna produzione extra",
+    "cr.b3p": "Non serve creare nuovi video per partecipare.",
+    "cr.b4t": "Non esclusivo",
+    "cr.b4p": "Il tuo canale e il tuo business restano tuoi.",
+    "cr.b5t": "Mantieni il controllo",
+    "cr.b5p": "Localizzazione, packaging e programmazione concordati con te.",
+    "cr.b6t": "Nuovi sponsor",
+    "cr.b6p": "Ulteriori opportunità con i brand legate alla distribuzione TV.",
+    "road.eyebrow": "L'ambizione",
+    "road.h2a": "Si parte dall'Italia.",
+    "road.h2b": "Pensato per crescere.",
+    "road.lede": "Prima un nuovo pubblico. Poi un modello replicabile per portare il golf dei creator in altri mercati TV.",
+    "road.s1t": "Pilota italiano",
+    "road.s1p": "Validare il concept con contenuti dei creator in licenza e i primi spettatori.",
+    "road.now": "In preparazione",
+    "road.s2t": "Il playbook",
+    "road.s2p": "Un processo replicabile per localizzazione, programmazione e vendite.",
+    "road.next": "Poi",
+    "road.s3t": "Scala europea",
+    "road.s3p": "Altri mercati dopo la validazione — con diritti concordati separatamente.",
+    "road.later": "In seguito",
+    "road.banner": "Una grande visione, costruita un mercato e una partnership alla volta.",
+    "cta.pill": "Invito ai founding creator",
+    "cta.h2a": "Il tuo prossimo pubblico<br>sta già guardando.",
+    "cta.h2b": "Andiamo a trovarlo<br>sul suo schermo.",
+    "cta.lede": "Stiamo aprendo un numero limitato di partnership con i founding creator, a partire da un piccolo pilota non esclusivo. Se vuoi farne parte, parliamone.",
+    "cta.btn": "Contattaci",
+    "foot.label": "Invito ai founding creator",
+    "foot.note": "Concept illustrativo — programmazione, condizioni e distribuzione soggette ad accordi individuali."
+  };
+  var EN = {};
+  document.querySelectorAll("[data-i18n]").forEach(function (el) { EN[el.dataset.i18n] = el.textContent; });
+  document.querySelectorAll("[data-i18n-html]").forEach(function (el) { EN[el.dataset.i18nHtml] = el.innerHTML; });
+
+  function setLang(lang) {
+    var dict = lang === "it" ? IT : EN;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) { var v = dict[el.dataset.i18n]; if (v != null) el.textContent = v; });
+    document.querySelectorAll("[data-i18n-html]").forEach(function (el) { var v = dict[el.dataset.i18nHtml]; if (v != null) el.innerHTML = v; });
+    document.documentElement.lang = lang;
+    document.querySelectorAll(".lang button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lang === lang)); });
+    try { localStorage.setItem("gctv-lang", lang); } catch (e) {}
+  }
+  document.querySelectorAll(".lang button").forEach(function (b) { b.addEventListener("click", function () { setLang(b.dataset.lang); }); });
+
+  var initial = null;
+  try { initial = new URLSearchParams(location.search).get("lang") || localStorage.getItem("gctv-lang"); } catch (e) {}
+  if (initial === "it" || initial === "en") setLang(initial);
+</script>
+</body>
+</html>
