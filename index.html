@@ -8,189 +8,272 @@
 <meta property="og:title" content="Golf Club TV — Il golf dei creator arriva in TV">
 <meta property="og:description" content="Sfide, storie e personaggi del golf online, in italiano e sul grande schermo. Presto in Italia.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#08130f">
+<meta name="theme-color" content="#050d0a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='24' y='4' rx='6' fill='%23c6f25e'/%3E%3Cpath d='M13 10.5v11l9-5.5z' fill='%2308130f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #08130f;
-    --bg-2: #0c1c16;
-    --card: #10241c;
+    --bg: #050d0a;
+    --bg-2: #0a1a14;
+    --card: #0e2019;
     --card-2: #133024;
-    --line: #1f3d30;
+    --line: #1b3529;
     --line-strong: #2d5a45;
     --text: #eef5ef;
-    --muted: #a3b8ac;
+    --muted: #a9bdb1;
     --dim: #6f877a;
     --lime: #c6f25e;
     --lime-ink: #08130f;
-    --radius: 18px;
+    --radius: 20px;
     --max: 1180px;
+    --pad: 24px;
+    --p: 0; /* hero → TV morph progress, driven by scroll */
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: clip; }
   body {
     margin: 0; background: var(--bg); color: var(--text);
-    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-    font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: clip;
+  }
+  /* film grain */
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: .07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   a { color: inherit; }
-  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  ::selection { background: var(--lime); color: var(--lime-ink); }
+  :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+  .sr { position: absolute; left: -9999px; }
+
+  /* Type */
+  h1, h2, h3 { margin: 0; }
+  .display { font-stretch: 62%; font-weight: 900; text-transform: uppercase; line-height: .88; letter-spacing: -.005em; text-wrap: balance; }
+  h2.display { font-size: clamp(44px, 6.6vw, 96px); }
+  .lime { color: var(--lime); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; color: var(--lime); font-stretch: 112%; font-size: 11px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; margin: 0 0 22px; }
+  .eyebrow::before { content: ""; width: 28px; height: 2px; background: currentColor; flex: none; }
+  .lede { color: var(--muted); font-size: clamp(17px, 1.5vw, 20px); max-width: 640px; margin: 24px 0 0; }
 
   /* Nav */
-  .nav { position: sticky; top: 0; z-index: 20; background: rgba(8,19,15,.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid transparent; transition: border-color .2s; }
-  .nav.scrolled { border-bottom-color: var(--line); }
+  .nav { position: fixed; inset: 0 0 auto 0; z-index: 40; transition: background .3s, border-color .3s, backdrop-filter .3s; border-bottom: 1px solid transparent; }
+  .nav.scrolled { background: rgba(5,13,10,.72); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); border-bottom-color: rgba(255,255,255,.06); }
   .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
-  .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-  .brand-mark { width: 40px; height: 30px; border-radius: 8px; background: var(--lime); display: grid; place-items: center; flex: none; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand-mark { width: 40px; height: 30px; border-radius: 8px; background: var(--lime); display: grid; place-items: center; flex: none; box-shadow: 0 0 24px -4px rgba(198,242,94,.7); }
   .brand-mark svg { width: 14px; height: 14px; }
-  .brand-sep { width: 1px; height: 26px; background: var(--line-strong); }
-  .brand-name { font-weight: 700; letter-spacing: .22em; font-size: 15px; white-space: nowrap; }
+  .brand-name { font-stretch: 112%; font-weight: 800; letter-spacing: .2em; font-size: 14px; white-space: nowrap; }
   .nav-right { display: flex; align-items: center; gap: 12px; }
-  .lang { display: flex; border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px; }
+  .lang { display: flex; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: 3px; background: rgba(5,13,10,.35); }
   .lang button { font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .08em; background: none; border: 0; color: var(--muted); padding: 6px 10px; border-radius: 999px; cursor: pointer; }
-  .lang button[aria-pressed="true"] { background: var(--card-2); color: var(--lime); }
+  .lang button[aria-pressed="true"] { background: var(--lime); color: var(--lime-ink); }
 
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font: inherit; font-weight: 700; font-size: 15px; padding: 14px 22px; border-radius: 999px; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: transform .15s, box-shadow .2s; white-space: nowrap; }
+  .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font: inherit; font-weight: 800; font-size: 15px; padding: 14px 24px; border-radius: 999px; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: transform .2s, box-shadow .25s, background .2s, color .2s, border-color .2s; white-space: nowrap; overflow: hidden; }
   .btn-primary { background: var(--lime); color: var(--lime-ink); }
-  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 40px -10px rgba(198,242,94,.55); }
+  .btn-primary::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.75) 50%, transparent 65%); transform: translateX(-120%); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 44px -8px rgba(198,242,94,.7); }
+  .btn-primary:hover::after { transform: translateX(120%); transition: transform .7s ease; }
   .btn-ghost { border-color: var(--line-strong); color: var(--text); }
-  .btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
-  .btn-sm { padding: 10px 16px; font-size: 14px; }
+  .btn-ghost:hover { border-color: var(--lime); background: var(--lime); color: var(--lime-ink); }
+  .btn-sm { padding: 10px 18px; font-size: 14px; }
 
-  /* Shared */
-  .pill { display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px; background: var(--card); border: 1px solid var(--line-strong); color: var(--lime); font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  .pill { display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px 8px 12px; border-radius: 999px; background: rgba(5,13,10,.55); border: 1px solid rgba(198,242,94,.35); color: var(--lime); font-stretch: 112%; font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); animation: pulse 2s infinite; flex: none; }
   @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(198,242,94,.6); } 70% { box-shadow: 0 0 0 10px rgba(198,242,94,0); } 100% { box-shadow: 0 0 0 0 rgba(198,242,94,0); } }
-  .eyebrow { color: var(--dim); font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; margin: 0 0 18px; }
-  h1, h2, h3 { margin: 0; line-height: 1.04; letter-spacing: -.02em; }
-  h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; text-transform: uppercase; }
-  .lime { color: var(--lime); }
-  .lede { color: var(--muted); font-size: clamp(17px, 1.6vw, 20px); max-width: 720px; margin: 22px 0 0; }
-  section { padding: 110px 0; }
-  .section-head { margin-bottom: 48px; }
-  .card { background: linear-gradient(180deg, var(--card) 0%, var(--bg-2) 100%); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
-  .num { color: var(--lime); font-weight: 700; font-size: 15px; letter-spacing: .04em; }
-  .card h3 { font-size: 20px; text-transform: uppercase; margin: 14px 0 10px; letter-spacing: .01em; }
-  .card p { margin: 0; color: var(--muted); font-size: 16px; }
 
-  /* Signup form */
-  .signup { display: flex; gap: 10px; max-width: 520px; margin-top: 34px; }
-  .signup input {
-    flex: 1; min-width: 0; font: inherit; font-size: 16px; color: var(--text);
-    background: var(--card); border: 1px solid var(--line-strong); border-radius: 999px; padding: 14px 20px; outline: none;
-  }
+  /* Signup */
+  .signup { display: flex; gap: 6px; max-width: 500px; margin-top: 30px; padding: 6px; border-radius: 999px; background: rgba(8,20,15,.7); border: 1px solid rgba(255,255,255,.16); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: border-color .2s, box-shadow .2s; }
+  .signup:focus-within { border-color: var(--lime); box-shadow: 0 0 0 4px rgba(198,242,94,.14), 0 0 60px -12px rgba(198,242,94,.5); }
+  .signup input { flex: 1; min-width: 0; font: inherit; font-size: 16px; color: var(--text); background: none; border: 0; padding: 10px 8px 10px 18px; outline: none; }
   .signup input::placeholder { color: var(--dim); }
-  .signup input:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(198,242,94,.15); }
-  .form-msg { min-height: 22px; margin: 12px 0 0; font-size: 14px; color: var(--dim); }
+  .form-msg { min-height: 22px; margin: 12px 0 0 18px; font-size: 13px; color: var(--dim); }
   .form-msg.ok { color: var(--lime); font-weight: 600; }
 
-  /* Hero */
-  .hero { position: relative; padding: 70px 0 120px; overflow: hidden; }
-  .hero::before { content: ""; position: absolute; inset: auto -20% -55% 20%; height: 120%; background: radial-gradient(closest-side, rgba(198,242,94,.13), transparent 70%); pointer-events: none; }
-  .hero::after { content: ""; position: absolute; right: -25%; bottom: -40%; width: 75%; height: 80%; border-top: 2px solid rgba(198,242,94,.3); border-radius: 50%; transform: rotate(-12deg); pointer-events: none; }
-  .hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
-  .hero h1 { font-size: clamp(42px, 5.6vw, 76px); font-weight: 800; margin-top: 26px; }
-  .rule { width: 72px; height: 5px; background: var(--lime); border-radius: 3px; margin: 30px 0 24px; }
-  .hero .lede { margin-top: 0; max-width: 540px; }
+  /* ============ STAGE: full-screen broadcast that pulls back into a TV ============ */
+  .stage { position: relative; height: calc(100svh + 95vh); background:
+    radial-gradient(60% 50% at 70% 50%, rgba(198,242,94,.07), transparent 70%), var(--bg); }
+  .sticky { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+  .tv { position: absolute; left: 0; top: 0; width: 100%; height: 100%; will-change: transform, width, height; }
+  .tv::before { content: ""; position: absolute; left: 4%; right: 4%; bottom: -16%; height: 26%; background: radial-gradient(closest-side, rgba(198,242,94,.4), transparent); filter: blur(22px); opacity: var(--p); }
+  .screen { position: absolute; inset: 0; overflow: hidden; background: #06110d; container-type: size;
+    border-radius: calc(var(--p) * 22px);
+    box-shadow: 0 0 0 calc(var(--p) * 2px) rgba(198,242,94, calc(var(--p) * .9)), 0 0 calc(var(--p) * 90px) rgba(198,242,94, calc(var(--p) * .32)), 0 calc(var(--p) * 50px) 100px -30px rgba(0,0,0,.85); }
+  .scene { position: absolute; top: 0; height: 100%; left: calc(var(--shift, 0px) * -2); width: calc(100% + var(--shift, 0px) * 2); display: block; }
+  .scrim { position: absolute; inset: 0; opacity: calc(1 - var(--p)); pointer-events: none;
+    background: linear-gradient(90deg, rgba(5,13,10,.9) 0%, rgba(5,13,10,.6) 34%, rgba(5,13,10,0) 62%), linear-gradient(0deg, rgba(5,13,10,.85) 0%, rgba(5,13,10,0) 30%), linear-gradient(180deg, rgba(5,13,10,.6) 0%, rgba(5,13,10,0) 16%); }
+  .scan { position: absolute; inset: 0; pointer-events: none; opacity: calc(var(--p) * .5); background: repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px); }
+  .star { animation: tw 4s ease-in-out infinite; }
+  @keyframes tw { 50% { opacity: .15; } }
+  .pennant { transform-box: fill-box; transform-origin: 0 50%; animation: wave 2.6s ease-in-out infinite; }
+  @keyframes wave { 0%, 100% { transform: scaleX(1) skewY(0); } 50% { transform: scaleX(.86) skewY(5deg); } }
 
-  /* TV mock */
-  .tv-stack { position: relative; perspective: 1400px; }
-  .tv { position: relative; border-radius: 22px; overflow: hidden; border: 2px solid rgba(198,242,94,.85); box-shadow: 0 0 0 1px rgba(198,242,94,.25), 0 0 60px -6px rgba(198,242,94,.45), 0 40px 80px -30px rgba(0,0,0,.8); transform: rotateY(-9deg) rotateX(3deg); aspect-ratio: 16 / 10; background: #0b1d15; }
-  .tv svg.scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  .tv .badge { position: absolute; top: 18px; left: 18px; background: rgba(8,19,15,.75); border: 1px solid var(--line-strong); color: var(--lime); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: 7px 12px; border-radius: 999px; }
-  .tv .title { position: absolute; left: 22px; top: 62px; font-weight: 800; font-size: clamp(18px, 2.4vw, 28px); line-height: 1.02; text-transform: uppercase; text-shadow: 0 2px 20px rgba(0,0,0,.6); }
-  .tv .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 50%; background: rgba(8,19,15,.55); border: 2px solid rgba(255,255,255,.8); display: grid; place-items: center; }
-  .tv .controls { position: absolute; left: 20px; right: 20px; bottom: 16px; display: flex; align-items: center; gap: 14px; }
-  .tv .bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,.25); position: relative; }
-  .tv .bar i { position: absolute; inset: 0 55% 0 0; background: var(--lime); border-radius: 2px; animation: progress 9s ease-in-out infinite alternate; }
-  .tv .bar i::after { content: ""; position: absolute; right: -7px; top: -5px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
-  @keyframes progress { from { right: 70%; } to { right: 30%; } }
-  .tv .cc { font-size: 10px; font-weight: 800; border: 1.5px solid #fff; border-radius: 4px; padding: 1px 4px; }
-  .upnext { position: absolute; right: -18px; bottom: -46px; width: 250px; background: rgba(12,28,22,.94); border: 1px solid var(--line-strong); border-radius: 16px; padding: 18px 20px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.8); }
-  .upnext .eyebrow { color: var(--lime); margin-bottom: 10px; font-size: 11px; }
-  .upnext ul { list-style: none; margin: 0; padding: 0; }
-  .upnext li { display: flex; gap: 14px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; font-weight: 600; }
-  .upnext li:first-child { border-top: 0; }
-  .upnext time { color: var(--lime); font-variant-numeric: tabular-nums; font-weight: 700; }
+  /* on-screen broadcast graphics, visible once the picture has become a TV */
+  .osd { position: absolute; opacity: var(--p); pointer-events: none; }
+  .osd-badge { top: 4.5cqw; left: 4.5cqw; display: flex; align-items: center; gap: 1.2cqw; background: rgba(5,13,10,.72); border: 1px solid rgba(198,242,94,.4); color: var(--lime); font-stretch: 112%; font-size: max(8px, 1.75cqw); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: 1.1cqw 2cqw; border-radius: 999px; white-space: nowrap; }
+  .osd-badge i { width: 1.2cqw; height: 1.2cqw; min-width: 5px; min-height: 5px; border-radius: 50%; background: var(--lime); }
+  .osd-third { left: 4.5cqw; bottom: 9cqw; }
+  .osd-third b { display: block; font-stretch: 62%; font-weight: 900; font-size: 8.4cqw; line-height: .86; text-transform: uppercase; text-shadow: 0 2px 30px rgba(0,0,0,.7); }
+  .osd-bar { left: 4.5cqw; right: 4.5cqw; bottom: 4cqw; display: flex; align-items: center; gap: 2cqw; }
+  .osd-bar svg { width: 2cqw; height: 2cqw; min-width: 8px; min-height: 8px; }
+  .osd-bar .bar { flex: 1; height: max(2px, .5cqw); border-radius: 2px; background: rgba(255,255,255,.25); position: relative; }
+  .osd-bar .bar i { position: absolute; inset: 0 55% 0 0; background: var(--lime); border-radius: 2px; animation: progress 9s ease-in-out infinite alternate; }
+  @keyframes progress { from { right: 72%; } to { right: 30%; } }
+  .osd-next { right: 4.5cqw; top: 4.5cqw; width: 30cqw; background: rgba(5,13,10,.78); border: 1px solid rgba(255,255,255,.12); border-radius: 2cqw; padding: 2.2cqw 2.6cqw; font-size: 1.9cqw; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .osd-next p { margin: 0 0 1cqw; color: var(--lime); font-stretch: 112%; font-size: 1.4cqw; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+  .osd-next ul { list-style: none; margin: 0; padding: 0; }
+  .osd-next li { display: flex; gap: 1.6cqw; padding: 1cqw 0; border-top: 1px solid rgba(255,255,255,.1); font-weight: 600; white-space: nowrap; }
+  .osd-next li:first-child { border-top: 0; }
+  .osd-next time { color: var(--lime); font-variant-numeric: tabular-nums; font-weight: 700; }
+  @container (max-width: 560px) { .osd-next { display: none; } }
 
-  /* What it is */
+  .hero-copy { position: absolute; inset: 0; display: flex; align-items: center; padding-top: 72px; z-index: 2; }
+  .hero-copy .wrap { width: 100%; }
+  .hero-copy h1 { font-size: clamp(56px, min(9.2vw, 15.5svh), 132px); max-width: 7em; margin-top: 22px; }
+  .hero-copy h1 span { display: block; }
+  @media (min-width: 981px) { html[lang="en"] .hero-copy h1 { max-width: none; font-size: clamp(56px, min(7.2vw, 14svh), 104px); } html[lang="en"] .hero-copy h1 span { white-space: nowrap; } }
+  .hero-copy .lede { max-width: 480px; margin-top: 26px; color: #c4d4c9; }
+  .rise { opacity: 0; transform: translateY(26px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--d, 0) * 110ms + 150ms); }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  .scroll-hint { position: absolute; left: 50%; bottom: 22px; width: 1px; height: 46px; background: rgba(255,255,255,.18); overflow: hidden; z-index: 2; opacity: calc(1 - var(--p) * 6); }
+  .scroll-hint::after { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 40%; background: var(--lime); animation: hint 1.8s cubic-bezier(.6,0,.3,1) infinite; }
+  @keyframes hint { from { transform: translateY(-100%); } to { transform: translateY(260%); } }
+
+  .intro { position: absolute; z-index: 2; opacity: 0; left: max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))); width: min(40%, 460px); top: 50%; transform: translateY(-50%); }
+  .intro h2.display { font-size: clamp(40px, 5.2vw, 78px); }
+  .intro .lede { font-size: 17px; }
+
+  /* Sections */
+  section { padding: 120px 0; position: relative; }
+  .section-head { margin-bottom: 56px; }
+
+  /* Pillars */
+  .pillars-sec { padding-top: 40px; }
   .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .icon { width: 56px; height: 56px; border-radius: 14px; background: var(--card-2); border: 1px solid var(--line-strong); display: grid; place-items: center; color: var(--lime); }
+  .card { position: relative; background: linear-gradient(180deg, rgba(19,48,36,.55) 0%, rgba(10,26,20,.55) 100%); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; overflow: hidden; transition: border-color .3s, transform .4s cubic-bezier(.2,.7,.2,1); }
+  .card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 0%), rgba(198,242,94,.16), transparent 60%); opacity: 0; transition: opacity .35s; pointer-events: none; }
+  .card:hover { border-color: rgba(198,242,94,.45); transform: translateY(-4px); }
+  .card:hover::before { opacity: 1; }
+  .card > * { position: relative; }
+  .card h3 { font-stretch: 75%; font-weight: 800; font-size: 26px; line-height: 1; text-transform: uppercase; margin: 0 0 10px; letter-spacing: .005em; }
+  .card p { margin: 0; color: var(--muted); font-size: 16px; }
+  .pillar .ghost { position: absolute; right: 18px; top: 6px; font-stretch: 62%; font-weight: 900; font-size: 120px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(198,242,94,.16); transition: -webkit-text-stroke-color .3s; }
+  .pillar:hover .ghost { -webkit-text-stroke-color: rgba(198,242,94,.5); }
+  .icon { width: 56px; height: 56px; border-radius: 16px; background: var(--lime); display: grid; place-items: center; color: var(--lime-ink); margin-bottom: 64px; box-shadow: 0 10px 40px -10px rgba(198,242,94,.6); }
   .icon svg { width: 26px; height: 26px; }
-  .pillars h3 { margin-top: 22px; }
+
+  /* Ticker */
+  .ticker { overflow: hidden; border-block: 1px solid var(--line); padding: 26px 0; background: var(--bg-2); transform: rotate(-1.2deg) scale(1.02); margin: 30px 0; }
+  .ticker-track { display: flex; width: max-content; animation: ticker 38s linear infinite; }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+  .ticker ul { display: flex; align-items: center; list-style: none; margin: 0; padding: 0; }
+  .ticker li { display: flex; align-items: center; font-stretch: 62%; font-weight: 900; font-style: italic; text-transform: uppercase; font-size: clamp(44px, 7vw, 100px); line-height: 1; white-space: nowrap; }
+  .ticker li:nth-child(even) { color: transparent; -webkit-text-stroke: 1.5px var(--lime); }
+  .ticker li::after { content: ""; width: .32em; height: .32em; margin: 0 .42em; background: var(--lime); clip-path: polygon(12% 0, 100% 50%, 12% 100%); }
+  @keyframes ticker { to { transform: translateX(-50%); } }
 
   /* Shows */
   .shows { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
-  .show { display: grid; grid-template-columns: 170px 1fr; gap: 24px; align-items: center; padding: 18px; }
-  .thumb { aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--line-strong); }
-  .thumb svg { width: 100%; height: 100%; display: block; }
-  .thumb .p { position: absolute; right: 8px; bottom: 8px; width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; background: rgba(8,19,15,.55); display: grid; place-items: center; }
-  .show h3 { margin-top: 8px; }
-  .note { color: var(--dim); font-size: 13px; margin-top: 22px; }
+  .show { padding: 0; }
+  .poster { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #0b1d15; }
+  .poster > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: transform 1.1s cubic-bezier(.2,.7,.2,1); }
+  .show:hover .poster > svg { transform: scale(1.06); }
+  .poster::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,26,20,.95) 0%, rgba(10,26,20,0) 42%); }
+  .poster .p { position: absolute; z-index: 1; right: 20px; top: 20px; width: 52px; height: 52px; border-radius: 50%; background: var(--lime); display: grid; place-items: center; transform: scale(.6); opacity: 0; transition: transform .35s cubic-bezier(.2,1.4,.4,1), opacity .25s; box-shadow: 0 0 40px rgba(198,242,94,.6); }
+  .show:hover .poster .p { transform: none; opacity: 1; }
+  .show-body { display: grid; grid-template-columns: auto 1fr; gap: 6px 20px; align-items: start; padding: 4px 30px 30px; margin-top: -34px; z-index: 1; }
+  .show-body .num { grid-row: span 2; font-stretch: 62%; font-weight: 900; font-size: 84px; line-height: .8; color: transparent; -webkit-text-stroke: 1.5px var(--lime); }
+  .show-body h3 { font-size: clamp(28px, 3vw, 40px); font-stretch: 62%; font-weight: 900; }
+  .note { color: var(--dim); font-size: 13px; margin-top: 26px; }
 
   /* Statement band */
-  .band { background: linear-gradient(180deg, var(--bg) 0%, #0b1a14 100%); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 100px 0; }
-  .band blockquote { margin: 0; font-size: clamp(26px, 3.6vw, 44px); font-weight: 800; line-height: 1.15; letter-spacing: -.015em; max-width: 980px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
-  .tags span { padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); font-size: 14px; font-weight: 600; }
+  .band { padding: 110px 0 150px; background: radial-gradient(55% 48% at 50% 55%, rgba(198,242,94,.09), transparent 100%); }
+  .band blockquote { margin: 0; font-stretch: 68%; font-weight: 900; text-transform: uppercase; font-size: clamp(38px, 6.2vw, 92px); line-height: .94; max-width: 1100px; }
+  .band .w { opacity: .16; transition: opacity .5s ease; }
+  .band .w.on { opacity: 1; }
 
   /* CTA */
-  .cta .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; }
-  .cta h2 { font-size: clamp(36px, 5.4vw, 64px); }
-  .ball { aspect-ratio: 1; max-width: 400px; width: 100%; justify-self: center; }
-  .ball svg { width: 100%; height: 100%; display: block; }
+  .cta { overflow: hidden; }
+  .cta .wrap { display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center; }
+  .cta h2.display { font-size: clamp(48px, 7.4vw, 112px); margin-top: 26px; }
+  .ball { position: relative; aspect-ratio: 1; max-width: 480px; width: 100%; justify-self: center; }
+  .ball::before { content: ""; position: absolute; inset: -18%; background: radial-gradient(closest-side, rgba(198,242,94,.3), rgba(198,242,94,.06) 55%, transparent 72%); animation: breathe 5s ease-in-out infinite; }
+  .ball::after { content: ""; position: absolute; left: 14%; right: 14%; bottom: 0; height: 9%; background: radial-gradient(closest-side, rgba(0,0,0,.7), transparent); }
+  .ball canvas { position: relative; width: 100%; height: 100%; display: block; z-index: 1; }
+  .ring { position: absolute; inset: 2%; border-radius: 50%; border: 1px dashed rgba(198,242,94,.3); animation: spin 40s linear infinite; }
+  .ring.r2 { inset: -12%; border-style: solid; border-color: rgba(198,242,94,.1); animation: none; }
+  @keyframes breathe { 50% { transform: scale(1.08); opacity: .75; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* Creator strip */
-  .creator-strip { padding: 0 0 100px; }
-  .creator-box { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding: 30px 34px; border-radius: var(--radius); border: 1px solid rgba(198,242,94,.4); background: var(--card); }
-  .creator-box h3 { font-size: 22px; text-transform: none; letter-spacing: -.01em; margin: 0 0 6px; }
-  .creator-box p { margin: 0; color: var(--muted); max-width: 640px; }
+  .creator-strip { padding: 0 0 110px; }
+  .creator-box { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding: 34px 38px; }
+  .creator-box h3 { font-size: 34px; margin: 0 0 8px; }
+  .creator-box p { max-width: 640px; }
 
-  footer { border-top: 1px solid var(--line); padding: 34px 0 44px; color: var(--dim); font-size: 13px; }
-  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; align-items: center; }
-  footer .label { letter-spacing: .22em; font-weight: 700; text-transform: uppercase; }
+  footer { border-top: 1px solid var(--line); color: var(--dim); font-size: 13px; overflow: hidden; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; align-items: center; padding-top: 34px; padding-bottom: 20px; }
+  footer .label { font-stretch: 112%; letter-spacing: .22em; font-weight: 700; text-transform: uppercase; color: var(--muted); }
+  .wordmark { display: block; text-align: center; white-space: nowrap; font-stretch: 62%; font-weight: 900; font-size: 18.6vw; line-height: .74; margin-bottom: -.1em; letter-spacing: -.01em; color: transparent; -webkit-text-stroke: 1px rgba(198,242,94,.35); background: linear-gradient(180deg, rgba(198,242,94,.22), rgba(198,242,94,0) 85%); -webkit-background-clip: text; background-clip: text; user-select: none; }
 
-  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .9s cubic-bezier(.2,.7,.2,1), border-color .3s; transition-delay: calc(var(--i, 0) * 90ms); }
   .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
-    .dot, .tv .bar i { animation: none; }
-    html { scroll-behavior: auto; }
-  }
+  .card.reveal.in { transition-delay: 0s; }
 
   @media (max-width: 980px) {
-    .hero .wrap, .cta .wrap { grid-template-columns: 1fr; }
-    .tv-stack { margin: 10px 8px 60px; }
-    .tv { transform: none; }
-    .upnext { right: 8px; bottom: -50px; width: 220px; }
+    .scene { --shift: calc((1 - var(--p)) * 21svh); }
+    .scrim { background: linear-gradient(180deg, rgba(5,13,10,.55) 0%, rgba(5,13,10,0) 14%, rgba(5,13,10,0) 30%, rgba(5,13,10,.84) 54%, rgba(5,13,10,.97) 100%); }
+    .hero-copy { align-items: flex-end; padding: 72px 0 34px; }
+    .hero-copy h1 { font-size: min(15.5vw, 10svh, 96px); margin-top: 16px; }
+    .hero-copy .lede { margin-top: 16px; font-size: 16px; }
+    .signup { margin-top: 20px; }
+    .scroll-hint { display: none; }
+    .intro { left: var(--pad); right: var(--pad); width: auto; top: var(--top, 50%); transform: none; }
+    .intro h2.display { font-size: clamp(38px, 10.5vw, 72px); }
+    .intro .lede { margin-top: 16px; font-size: 16px; max-width: 560px; }
+    .cta .wrap { grid-template-columns: 1fr; }
     .pillars { grid-template-columns: 1fr; }
-    .ball { max-width: 280px; }
+    .icon { margin-bottom: 28px; }
+    .ball { max-width: 300px; order: -1; }
   }
   @media (max-width: 760px) {
+    :root { --pad: 16px; }
     body { font-size: 16px; }
-    section { padding: 80px 0; }
-    .band { padding: 80px 0; }
-    .wrap { padding: 0 16px; }
+    section { padding: 84px 0; }
+    .band { padding: 100px 0; }
     .shows { grid-template-columns: 1fr; }
-    .show { grid-template-columns: 110px 1fr; gap: 16px; padding: 14px; }
-    .brand-name { font-size: 13px; letter-spacing: .16em; }
-    .brand-sep { display: none; }
+    .show-body { padding: 4px 20px 24px; gap: 6px 14px; }
+    .show-body .num { font-size: 64px; }
+    .poster .p { transform: none; opacity: 1; width: 42px; height: 42px; right: 14px; top: 14px; }
+    .brand-name { font-size: 12px; letter-spacing: .16em; }
+    .nav .wrap { height: 64px; }
     .nav .btn { display: none; }
-    .hero { padding-top: 40px; }
-    .hero::after { display: none; }
-    .creator-box { padding: 24px; }
-  }
-  @media (max-width: 480px) {
-    .signup { flex-direction: column; }
-    .signup .btn { width: 100%; }
-    .upnext { position: relative; right: auto; bottom: auto; width: 100%; margin-top: 16px; }
-    .tv-stack { margin: 10px 0 0; }
-    .tv .title { font-size: 17px; top: 56px; }
-    .tv .play { width: 50px; height: 50px; }
+    .hero-copy { padding-top: 64px; }
+    .creator-box { padding: 26px 22px; }
     .creator-box .btn { width: 100%; }
+    .section-head { margin-bottom: 40px; }
+  }
+  @media (max-width: 980px) and (max-height: 700px) {
+    .intro .lede { font-size: 15px; line-height: 1.45; }
+    .intro h2.display { font-size: clamp(34px, 9.5vw, 60px); }
+    .intro .eyebrow { margin-bottom: 12px; }
+  }
+  @media (max-width: 380px) { .signup .btn { padding: 12px 16px; } .signup input { padding-left: 12px; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; }
+    .rise { opacity: 1; transform: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .stage { height: auto; }
+    .sticky { position: relative; height: auto; overflow: visible; }
+    .tv { height: 100svh; }
+    .hero-copy { position: relative; min-height: 100svh; }
+    .intro { position: relative; opacity: 1; left: auto; right: auto; top: auto; transform: none; width: auto; max-width: var(--max); margin: 0 auto; padding: 100px var(--pad) 40px; }
+    .band .w { opacity: 1; }
+    .scroll-hint { display: none; }
   }
 </style>
 </head>
@@ -200,7 +283,6 @@
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Golf Club TV">
       <span class="brand-mark"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 1v12l11-6z" fill="#08130f"/></svg></span>
-      <span class="brand-sep"></span>
       <span class="brand-name">GOLF CLUB TV</span>
     </a>
     <div class="nav-right">
@@ -215,90 +297,109 @@
 
 <main id="top">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap">
-      <div class="reveal">
-        <span class="pill"><span class="dot"></span><span data-i18n="hero.pill">Presto in Italia</span></span>
-        <h1>
-          <span data-i18n="hero.h1a">Il golf dei creator</span><br>
-          <span class="lime" data-i18n="hero.h1b">arriva in TV.</span>
-        </h1>
-        <div class="rule"></div>
-        <p class="lede" data-i18n="hero.lede">Golf Club TV è il nuovo canale di golf entertainment: le sfide, le storie e i personaggi più seguiti del golf online, raccontati in italiano e pensati per il grande schermo.</p>
-        <form class="signup js-signup" novalidate>
-          <label class="sr" for="email1" style="position:absolute;left:-9999px" data-i18n="form.label">La tua email</label>
-          <input id="email1" type="email" name="email" required autocomplete="email" data-i18n-ph="form.ph" placeholder="La tua email">
-          <button class="btn btn-primary" type="submit" data-i18n="form.btn">Avvisami</button>
-        </form>
-        <p class="form-msg" aria-live="polite" data-i18n="form.hint">Ti scriviamo solo quando andiamo in onda.</p>
-      </div>
+  <!-- STAGE: hero broadcast → TV -->
+  <div class="stage" id="stage">
+    <div class="sticky" id="sticky">
 
-      <div class="tv-stack reveal" aria-hidden="true">
-        <div class="tv">
-          <svg class="scene" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice">
+      <div class="tv" id="tv" aria-hidden="true">
+        <div class="screen">
+          <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
             <defs>
-              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c2018"/><stop offset="1" stop-color="#1d4a2f"/></linearGradient>
-              <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7a3d"/><stop offset="1" stop-color="#174d26"/></linearGradient>
-              <radialGradient id="glow" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#c6f25e" stop-opacity=".22"/><stop offset="1" stop-color="#c6f25e" stop-opacity="0"/></radialGradient>
-              <linearGradient id="vig" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#08130f" stop-opacity=".85"/><stop offset=".45" stop-color="#08130f" stop-opacity=".1"/><stop offset="1" stop-color="#08130f" stop-opacity="0"/></linearGradient>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#030907"/><stop offset=".55" stop-color="#0a2219"/><stop offset="1" stop-color="#1c5236"/></linearGradient>
+              <radialGradient id="dusk" cx=".5" cy="1" r="1"><stop offset="0" stop-color="#e4fb9a" stop-opacity=".75"/><stop offset=".25" stop-color="#c6f25e" stop-opacity=".32"/><stop offset="1" stop-color="#c6f25e" stop-opacity="0"/></radialGradient>
+              <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a7a41"/><stop offset=".25" stop-color="#17512c"/><stop offset="1" stop-color="#07190f"/></linearGradient>
+              <radialGradient id="spot" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#d9f99a" stop-opacity=".5"/><stop offset="1" stop-color="#c6f25e" stop-opacity="0"/></radialGradient>
+              <radialGradient id="moon" cx=".38" cy=".36" r=".8"><stop offset="0" stop-color="#f6ffe0"/><stop offset="1" stop-color="#b9d99a"/></radialGradient>
+              <radialGradient id="vig" cx=".6" cy=".45" r=".8"><stop offset=".55" stop-color="#030907" stop-opacity="0"/><stop offset="1" stop-color="#030907" stop-opacity=".75"/></radialGradient>
             </defs>
-            <rect width="640" height="400" fill="url(#sky)"/>
-            <path d="M0 175 q20-22 40-6 q18-26 42-6 q20-20 40-2 q22-24 46-4 q18-18 38 0 q24-26 48-4 q20-20 42 0 q22-24 44-2 q18-20 40 0 q24-22 46 0 q20-24 42-2 q22-20 44 0 q20-22 42 0 q18-16 36 2 L640 200 L0 200z" fill="#0d2a1b"/>
-            <rect y="190" width="640" height="210" fill="url(#grass)"/>
-            <g fill="#3c9a4c" opacity=".55">
-              <path d="M320 200 L120 400 L190 400z"/><path d="M320 200 L260 400 L330 400z"/><path d="M320 200 L400 400 L470 400z"/><path d="M320 200 L540 400 L610 400z"/><path d="M320 200 L0 330 L0 380z"/><path d="M320 200 L640 330 L640 380z"/>
-            </g>
-            <ellipse cx="320" cy="250" rx="300" ry="160" fill="url(#glow)"/>
-            <ellipse cx="530" cy="318" rx="100" ry="38" fill="#c8b98a"/>
-            <ellipse cx="530" cy="318" rx="84" ry="29" fill="#ad9d6e"/>
-            <line x1="342" y1="122" x2="342" y2="212" stroke="#eef5ef" stroke-width="3"/>
-            <path d="M344 123 L384 134 L344 146z" fill="#c6f25e"/>
-            <ellipse cx="342" cy="213" rx="7" ry="2.5" fill="#0d2a1b"/>
-            <rect width="640" height="400" fill="url(#vig)"/>
+            <rect width="1600" height="410" fill="url(#sky)"/>
+            <g id="stars" fill="#eef5ef"></g>
+            <g opacity=".92"><circle cx="1352" cy="150" r="60" fill="#c6f25e" opacity=".08"/><circle cx="1352" cy="150" r="34" fill="url(#moon)"/><g fill="#7fa06a" opacity=".5"><circle cx="1340" cy="136" r="2.6"/><circle cx="1352" cy="132" r="2.6"/><circle cx="1364" cy="138" r="2.4"/><circle cx="1334" cy="150" r="2.6"/><circle cx="1347" cy="147" r="2.8"/><circle cx="1360" cy="150" r="2.6"/><circle cx="1371" cy="153" r="2.2"/><circle cx="1341" cy="162" r="2.5"/><circle cx="1354" cy="163" r="2.6"/><circle cx="1366" cy="165" r="2.2"/><circle cx="1349" cy="174" r="2.2"/></g></g>
+            <ellipse cx="1010" cy="410" rx="640" ry="250" fill="url(#dusk)"/>
+            <path id="trees1" fill="#0f3323"/>
+            <path id="trees2" fill="#081c13"/>
+            <rect y="402" width="1600" height="498" fill="url(#grass)"/>
+            <g id="stripes" fill="#c6f25e" opacity=".05"></g>
+            <ellipse cx="1010" cy="446" rx="330" ry="56" fill="url(#spot)"/>
+            <ellipse cx="1010" cy="442" rx="170" ry="15" fill="#46a85a"/>
+            <ellipse cx="1226" cy="456" rx="78" ry="9" fill="#cdbf8c" opacity=".75"/>
+            <ellipse cx="770" cy="470" rx="96" ry="10" fill="#cdbf8c" opacity=".55"/>
+            <ellipse cx="1010" cy="441" rx="7" ry="2.2" fill="#062014"/>
+            <line x1="1010" y1="322" x2="1010" y2="441" stroke="#f3f8f1" stroke-width="2.6"/>
+            <path class="pennant" d="M1011.5 323 L1058 336 L1011.5 351z" fill="#c6f25e"/>
+            <rect width="1600" height="900" fill="url(#vig)"/>
+            <!-- shot tracer -->
+            <path id="trGlow" fill="none" stroke="#c6f25e" stroke-width="14" stroke-linecap="round" opacity=".16"/>
+            <path id="trLine" fill="none" stroke="#eaffb0" stroke-width="3.2" stroke-linecap="round"/>
+            <circle id="trBall" r="5" fill="#fff" opacity="0"/>
+            <g id="trTag" opacity="0"><rect x="0" y="-13" width="74" height="26" rx="13" fill="#c6f25e"/><text id="trTxt" x="37" y="5" text-anchor="middle" font-family="Archivo, sans-serif" font-size="14" font-weight="800" fill="#08130f">0 m</text></g>
           </svg>
-          <span class="badge" data-i18n="tv.badge">Stasera · 21:00</span>
-          <div class="title">Creator<br>Golf Night</div>
-          <div class="play"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M6 3v16l13-8z" fill="#fff"/></svg></div>
-          <div class="controls">
-            <svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 1v12l10-6z" fill="#fff"/></svg>
+          <div class="scrim"></div>
+          <div class="scan"></div>
+          <span class="osd osd-badge"><i></i><span data-i18n="tv.badge">Stasera · 21:00</span></span>
+          <div class="osd osd-third"><b>Creator<br>Golf Night</b></div>
+          <div class="osd osd-bar">
+            <svg viewBox="0 0 14 14"><path d="M2 1v12l10-6z" fill="#fff"/></svg>
             <div class="bar"><i></i></div>
-            <span class="cc">CC</span>
+          </div>
+          <div class="osd osd-next">
+            <p data-i18n="tv.upnext">A seguire</p>
+            <ul>
+              <li><time>21:00</time><span>Creator Golf Night</span></li>
+              <li><time>22:00</time><span>The 19th Hole</span></li>
+              <li><time>23:00</time><span>Beyond the Course</span></li>
+            </ul>
           </div>
         </div>
-        <div class="upnext">
-          <p class="eyebrow" data-i18n="tv.upnext">A seguire</p>
-          <ul>
-            <li><time>21:00</time><span>Creator Golf Night</span></li>
-            <li><time>22:00</time><span>The 19th Hole</span></li>
-            <li><time>23:00</time><span>Beyond the Course</span></li>
-          </ul>
-        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- WHAT IT IS -->
-  <section id="cose">
-    <div class="wrap">
-      <div class="section-head reveal">
+      <section class="hero-copy" id="heroCopy" style="padding-bottom:0">
+        <div class="wrap">
+          <span class="pill rise"><span class="dot"></span><span data-i18n="hero.pill">Presto in Italia</span></span>
+          <h1 class="display">
+            <span class="rise" style="--d:1" data-i18n="hero.h1a">Il golf dei creator</span>
+            <span class="lime rise" style="--d:2" data-i18n="hero.h1b">arriva in TV.</span>
+          </h1>
+          <p class="lede rise" style="--d:3" data-i18n="hero.lede">Golf Club TV è il nuovo canale di golf entertainment: le sfide, le storie e i personaggi più seguiti del golf online, raccontati in italiano e pensati per il grande schermo.</p>
+          <div class="rise" style="--d:4">
+            <form class="signup js-signup" novalidate>
+              <label class="sr" for="email1" data-i18n="form.label">La tua email</label>
+              <input id="email1" type="email" name="email" required autocomplete="email" data-i18n-ph="form.ph" placeholder="La tua email">
+              <button class="btn btn-primary" type="submit" data-i18n="form.btn">Avvisami</button>
+            </form>
+            <p class="form-msg" aria-live="polite" data-i18n="form.hint">Ti scriviamo solo quando andiamo in onda.</p>
+          </div>
+        </div>
+      </section>
+      <span class="scroll-hint" aria-hidden="true"></span>
+
+      <div class="intro" id="cose">
         <p class="eyebrow" data-i18n="what.eyebrow">Cos'è Golf Club TV</p>
-        <h2><span data-i18n="what.h2a">Il meglio del golf online.</span><br><span class="lime" data-i18n="what.h2b">Sul tuo televisore.</span></h2>
+        <h2 class="display"><span data-i18n="what.h2a">Il meglio del golf online.</span> <span class="lime" data-i18n="what.h2b">Sul tuo televisore.</span></h2>
         <p class="lede" data-i18n="what.lede">Online c'è un nuovo modo di raccontare il golf: creator che giocano, sfidano i professionisti, viaggiano tra i campi più belli del mondo. Noi lo portiamo in TV.</p>
       </div>
+    </div>
+  </div>
+
+  <!-- PILLARS -->
+  <section class="pillars-sec">
+    <div class="wrap">
       <div class="pillars">
-        <div class="card reveal">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>
+        <div class="card pillar reveal">
+          <span class="ghost" aria-hidden="true">01</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>
           <h3 data-i18n="what.p1t">I creator più seguiti</h3>
           <p data-i18n="what.p1p">Una selezione dei migliori video dei golf creator, scelti per divertire, appassionare e far venire voglia di giocare.</p>
         </div>
-        <div class="card reveal">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h4M13 15h4M7 11h10"/></svg></div>
+        <div class="card pillar reveal" style="--i:1">
+          <span class="ghost" aria-hidden="true">02</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h4M13 15h4M7 11h10"/></svg></div>
           <h3 data-i18n="what.p2t">In italiano</h3>
           <p data-i18n="what.p2p">Sottotitoli o doppiaggio, e il contesto giusto per seguire ogni storia anche se non conosci ancora i protagonisti.</p>
         </div>
-        <div class="card reveal">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h3M7 17h3M13 13h4"/></svg></div>
+        <div class="card pillar reveal" style="--i:2">
+          <span class="ghost" aria-hidden="true">03</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h3M7 17h3M13 13h4"/></svg></div>
           <h3 data-i18n="what.p3t">Un vero palinsesto</h3>
           <p data-i18n="what.p3p">Non una playlist: appuntamenti fissi e programmi da scoprire, seguire e ritrovare ogni settimana.</p>
         </div>
@@ -306,60 +407,108 @@
     </div>
   </section>
 
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <ul>
+        <li data-i18n="band.t1">Sfide</li><li data-i18n="band.t2">Pro vs amateur</li><li data-i18n="band.t3">Campi da sogno</li><li data-i18n="band.t4">Consigli di gioco</li><li data-i18n="band.t5">Talk show</li><li data-i18n="band.t6">Viaggi</li>
+      </ul>
+      <ul aria-hidden="true">
+        <li data-i18n="band.t1">Sfide</li><li data-i18n="band.t2">Pro vs amateur</li><li data-i18n="band.t3">Campi da sogno</li><li data-i18n="band.t4">Consigli di gioco</li><li data-i18n="band.t5">Talk show</li><li data-i18n="band.t6">Viaggi</li>
+      </ul>
+    </div>
+  </div>
+
   <!-- SHOWS -->
-  <section id="programmi" style="padding-top:0">
+  <section id="programmi">
     <div class="wrap">
       <div class="section-head reveal">
         <p class="eyebrow" data-i18n="prog.eyebrow">Cosa vedrai</p>
-        <h2><span data-i18n="prog.h2a">Un canale con</span><br><span class="lime" data-i18n="prog.h2b">un punto di vista.</span></h2>
+        <h2 class="display"><span data-i18n="prog.h2a">Un canale con</span><br><span class="lime" data-i18n="prog.h2b">un punto di vista.</span></h2>
       </div>
       <div class="shows">
-        <div class="card show reveal">
-          <div class="thumb">
-            <svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMid slice"><rect width="120" height="90" fill="#1d4a2f"/><rect y="52" width="120" height="38" fill="#2f7a3d"/><circle cx="96" cy="20" r="26" fill="#c6f25e" opacity=".15"/><rect x="34" y="28" width="44" height="30" rx="4" fill="#0b1712"/><rect x="38" y="32" width="28" height="20" rx="2" fill="#3c9a4c"/><circle cx="72" cy="42" r="5" fill="#1f3d30"/><rect x="54" y="58" width="4" height="24" fill="#0b1712"/></svg>
-            <span class="p"><svg width="11" height="11" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#fff"/></svg></span>
+        <article class="card show reveal">
+          <div class="poster">
+            <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs><linearGradient id="p1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#04100b"/><stop offset="1" stop-color="#1b5235"/></linearGradient><radialGradient id="p1g" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#c6f25e" stop-opacity=".55"/><stop offset="1" stop-color="#c6f25e" stop-opacity="0"/></radialGradient></defs>
+              <rect width="320" height="180" fill="url(#p1)"/>
+              <circle cx="206" cy="78" r="90" fill="url(#p1g)"/>
+              <circle cx="206" cy="78" r="36" fill="#eaffb0"/>
+              <g fill="#9cc46a"><circle cx="194" cy="64" r="3"/><circle cx="208" cy="60" r="3"/><circle cx="221" cy="67" r="3"/><circle cx="188" cy="79" r="3"/><circle cx="202" cy="76" r="3.2"/><circle cx="216" cy="80" r="3"/><circle cx="228" cy="84" r="2.6"/><circle cx="196" cy="92" r="3"/><circle cx="210" cy="94" r="3"/><circle cx="222" cy="97" r="2.6"/></g>
+              <path d="M0 132 Q60 108 120 126 T240 120 T320 128 V180 H0z" fill="#0c2a1c"/>
+              <path d="M0 150 Q90 128 170 146 T320 140 V180 H0z" fill="#081a12"/>
+              <g fill="none" stroke="#eef5ef" stroke-width="2" opacity=".85"><path d="M22 40 V22 H40"/><path d="M280 22 H298 V40"/><path d="M22 122 V140 H40" opacity=".5"/></g>
+              <circle cx="56" cy="31" r="4" fill="#c6f25e"/><text x="66" y="35" font-family="Archivo,sans-serif" font-size="10" font-weight="800" letter-spacing="2" fill="#eef5ef">REC</text>
+            </svg>
+            <span class="p"><svg width="16" height="16" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#08130f"/></svg></span>
           </div>
-          <div><span class="num">01</span><h3>Creator Nights</h3><p data-i18n="prog.s1p">Le serate dedicate ai migliori episodi dei golf creator.</p></div>
-        </div>
-        <div class="card show reveal">
-          <div class="thumb">
-            <svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMid slice"><rect width="120" height="90" fill="#16402a"/><path d="M0 60 Q60 40 120 60 V90 H0z" fill="#2f7a3d"/><circle cx="60" cy="36" r="15" fill="#c6f25e" opacity=".9"/><text x="60" y="41" font-family="Inter,sans-serif" font-size="13" font-weight="800" text-anchor="middle" fill="#08130f">VS</text></svg>
-            <span class="p"><svg width="11" height="11" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#fff"/></svg></span>
+          <div class="show-body"><span class="num">01</span><h3 class="display">Creator Nights</h3><p data-i18n="prog.s1p">Le serate dedicate ai migliori episodi dei golf creator.</p></div>
+        </article>
+        <article class="card show reveal" style="--i:1">
+          <div class="poster">
+            <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs><clipPath id="p2l"><path d="M0 0 H190 L130 180 H0z"/></clipPath><clipPath id="p2r"><path d="M190 0 H320 V180 H130z"/></clipPath></defs>
+              <rect width="320" height="180" fill="#0a2418"/>
+              <path d="M0 0 H190 L130 180 H0z" fill="#c6f25e"/>
+              <g font-family="Archivo,sans-serif" font-weight="900" font-size="150" text-anchor="middle" style="font-stretch:62%;font-style:italic">
+                <text x="160" y="140" fill="#08130f" clip-path="url(#p2l)">VS</text>
+                <text x="160" y="140" fill="#c6f25e" clip-path="url(#p2r)">VS</text>
+              </g>
+              <g stroke="#c6f25e" stroke-width="1" opacity=".25"><path d="M230 0 L170 180M260 0 L200 180M290 0 L230 180M320 0 L260 180"/></g>
+            </svg>
+            <span class="p"><svg width="16" height="16" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#08130f"/></svg></span>
           </div>
-          <div><span class="num">02</span><h3>Big Matches</h3><p data-i18n="prog.s2p">Professionisti contro amateur, sfide testa a testa e partite che non vedrai nei tornei.</p></div>
-        </div>
-        <div class="card show reveal">
-          <div class="thumb">
-            <svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMid slice"><rect width="120" height="90" fill="#1a2a22"/><rect x="34" y="12" width="52" height="34" rx="3" fill="#0f3a24" stroke="#c6f25e" stroke-width="1"/><text x="60" y="27" font-family="Inter,sans-serif" font-size="7" font-weight="800" text-anchor="middle" fill="#eef5ef">THE</text><text x="60" y="38" font-family="Inter,sans-serif" font-size="9" font-weight="800" text-anchor="middle" fill="#eef5ef">19TH HOLE</text><rect y="66" width="120" height="24" fill="#2a3a32"/><circle cx="22" cy="58" r="9" fill="#a3b8ac"/><circle cx="60" cy="58" r="9" fill="#eef5ef"/><circle cx="98" cy="58" r="9" fill="#a3b8ac"/></svg>
-            <span class="p"><svg width="11" height="11" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#fff"/></svg></span>
+          <div class="show-body"><span class="num">02</span><h3 class="display">Big Matches</h3><p data-i18n="prog.s2p">Professionisti contro amateur, sfide testa a testa e partite che non vedrai nei tornei.</p></div>
+        </article>
+        <article class="card show reveal">
+          <div class="poster">
+            <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs><radialGradient id="p3g" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#1f5a3a"/><stop offset="1" stop-color="#050d0a"/></radialGradient></defs>
+              <rect width="320" height="180" fill="url(#p3g)"/>
+              <g fill="#c6f25e"><circle cx="40" cy="50" r="16" opacity=".1"/><circle cx="286" cy="38" r="22" opacity=".08"/><circle cx="262" cy="120" r="12" opacity=".12"/><circle cx="66" cy="124" r="9" opacity=".14"/></g>
+              <g font-family="Archivo,sans-serif" font-weight="900" text-anchor="middle" style="font-stretch:62%">
+                <text x="150" y="124" font-size="128" fill="none" stroke="#c6f25e" stroke-width="8" opacity=".18">19</text>
+                <text x="150" y="124" font-size="128" fill="none" stroke="#eaffb0" stroke-width="2.5">19</text>
+                <text x="212" y="66" font-size="30" fill="#eaffb0">TH</text>
+              </g>
+              <path d="M96 140 H224" stroke="#eaffb0" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M96 140 H224" stroke="#c6f25e" stroke-width="9" stroke-linecap="round" opacity=".18"/>
+            </svg>
+            <span class="p"><svg width="16" height="16" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#08130f"/></svg></span>
           </div>
-          <div><span class="num">03</span><h3>The 19th Hole</h3><p data-i18n="prog.s3p">Il nostro talk show originale: ospiti, chiacchiere e tutto quello che succede dopo l'ultima buca.</p></div>
-        </div>
-        <div class="card show reveal">
-          <div class="thumb">
-            <svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMid slice"><rect width="120" height="90" fill="#13361f"/><rect y="58" width="120" height="32" fill="#2f7a3d"/><circle cx="60" cy="40" r="16" fill="#eef5ef"/><g fill="#c9d4cc"><circle cx="54" cy="34" r="1.6"/><circle cx="60" cy="32" r="1.6"/><circle cx="66" cy="34" r="1.6"/><circle cx="52" cy="41" r="1.6"/><circle cx="58" cy="40" r="1.6"/><circle cx="64" cy="40" r="1.6"/><circle cx="70" cy="42" r="1.6"/><circle cx="56" cy="47" r="1.6"/><circle cx="62" cy="47" r="1.6"/></g><path d="M56 56 h8 l-2 12 h-4z" fill="#d9b44a"/></svg>
-            <span class="p"><svg width="11" height="11" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#fff"/></svg></span>
+          <div class="show-body"><span class="num">03</span><h3 class="display">The 19th Hole</h3><p data-i18n="prog.s3p">Il nostro talk show originale: ospiti, chiacchiere e tutto quello che succede dopo l'ultima buca.</p></div>
+        </article>
+        <article class="card show reveal" style="--i:1">
+          <div class="poster">
+            <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="320" height="180" fill="#0c2a1c"/>
+              <g fill="none" stroke="#c6f25e" stroke-width="1.1" opacity=".5">
+                <path d="M196 72 c18-10 44-4 48 14 c4 18-14 30-34 28 c-20-2-30-30-14-42z"/>
+                <path d="M184 58 c28-18 74-8 80 24 c6 30-24 52-58 48 c-36-4-52-50-22-72z" opacity=".8"/>
+                <path d="M170 44 c40-26 104-12 112 36 c8 44-36 74-84 68 c-52-6-74-72-28-104z" opacity=".6"/>
+                <path d="M152 30 c54-34 140-14 150 50 c10 58-48 96-110 88 c-68-8-100-94-40-138z" opacity=".42"/>
+                <path d="M128 14 c70-42 190-12 200 70 c10 76-64 120-140 108 c-86-12-132-120-60-178z" opacity=".3"/>
+                <path d="M30 150 c14-10 36-8 42 6 c6 14-8 24-24 22 c-16-2-28-18-18-28z" opacity=".5"/>
+                <path d="M14 140 c24-18 62-12 72 14 c8 22-14 40-44 38" opacity=".35"/>
+              </g>
+              <path d="M36 158 C80 150 96 96 140 100 S190 110 218 88" fill="none" stroke="#eef5ef" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>
+              <circle cx="36" cy="158" r="4" fill="#eef5ef"/>
+              <line x1="218" y1="88" x2="218" y2="56" stroke="#eef5ef" stroke-width="2"/><path d="M219 56 L240 62 L219 69z" fill="#c6f25e"/>
+            </svg>
+            <span class="p"><svg width="16" height="16" viewBox="0 0 14 14"><path d="M3 1v12l10-6z" fill="#08130f"/></svg></span>
           </div>
-          <div><span class="num">04</span><h3>Beyond the Course</h3><p data-i18n="prog.s4p">Campi, viaggi, personaggi e storie che vanno oltre lo score.</p></div>
-        </div>
+          <div class="show-body"><span class="num">04</span><h3 class="display">Beyond the Course</h3><p data-i18n="prog.s4p">Campi, viaggi, personaggi e storie che vanno oltre lo score.</p></div>
+        </article>
       </div>
       <p class="note reveal" data-i18n="prog.note">Il palinsesto è in costruzione: programmi e orari saranno annunciati al lancio.</p>
     </div>
   </section>
 
   <!-- STATEMENT -->
-  <section class="band">
-    <div class="wrap reveal">
+  <section class="band" id="band">
+    <div class="wrap">
       <p class="eyebrow" data-i18n="band.eyebrow">Per chi è</p>
       <blockquote><span data-i18n="band.q1">Per chi gioca ogni weekend e per chi il golf lo guarda dal divano.</span> <span class="lime" data-i18n="band.q2">Golf leggero, divertente, raccontato da chi lo vive davvero.</span></blockquote>
-      <div class="tags">
-        <span data-i18n="band.t1">Sfide</span>
-        <span data-i18n="band.t2">Pro vs amateur</span>
-        <span data-i18n="band.t3">Campi da sogno</span>
-        <span data-i18n="band.t4">Consigli di gioco</span>
-        <span data-i18n="band.t5">Talk show</span>
-        <span data-i18n="band.t6">Viaggi</span>
-      </div>
     </div>
   </section>
 
@@ -368,27 +517,18 @@
     <div class="wrap">
       <div class="reveal">
         <span class="pill"><span class="dot"></span><span data-i18n="cta.pill">Stiamo arrivando</span></span>
-        <h2 style="margin-top:28px"><span data-i18n="cta.h2a">Non perderti</span><br><span class="lime" data-i18n="cta.h2b">la prima puntata.</span></h2>
+        <h2 class="display"><span data-i18n="cta.h2a">Non perderti</span><br><span class="lime" data-i18n="cta.h2b">la prima puntata.</span></h2>
         <p class="lede" data-i18n="cta.lede">Lasciaci la tua email: ti avvisiamo quando Golf Club TV va in onda e ti diciamo dove trovarci.</p>
         <form class="signup js-signup" novalidate>
-          <label for="email2" style="position:absolute;left:-9999px" data-i18n="form.label">La tua email</label>
+          <label class="sr" for="email2" data-i18n="form.label">La tua email</label>
           <input id="email2" type="email" name="email" required autocomplete="email" data-i18n-ph="form.ph" placeholder="La tua email">
           <button class="btn btn-primary" type="submit" data-i18n="form.btn">Avvisami</button>
         </form>
         <p class="form-msg" aria-live="polite" data-i18n="form.hint">Ti scriviamo solo quando andiamo in onda.</p>
       </div>
       <div class="ball reveal" aria-hidden="true">
-        <svg viewBox="0 0 400 400">
-          <defs>
-            <radialGradient id="bg1" cx=".38" cy=".38" r=".75"><stop offset="0" stop-color="#e3fb9c"/><stop offset=".55" stop-color="#9dd16a"/><stop offset="1" stop-color="#2f6d3a"/></radialGradient>
-            <radialGradient id="halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#c6f25e" stop-opacity=".25"/><stop offset="1" stop-color="#c6f25e" stop-opacity="0"/></radialGradient>
-            <clipPath id="bc"><circle cx="200" cy="190" r="150"/></clipPath>
-          </defs>
-          <circle cx="200" cy="200" r="200" fill="url(#halo)"/>
-          <ellipse cx="200" cy="350" rx="170" ry="26" fill="#000" opacity=".45"/>
-          <circle cx="200" cy="190" r="150" fill="url(#bg1)"/>
-          <g clip-path="url(#bc)" fill="#1f5a2f" opacity=".35" id="dimples"></g>
-        </svg>
+        <span class="ring r2"></span><span class="ring"></span>
+        <canvas id="ball3d"></canvas>
       </div>
     </div>
   </section>
@@ -396,9 +536,9 @@
   <!-- CREATOR STRIP -->
   <div class="creator-strip">
     <div class="wrap">
-      <div class="creator-box reveal">
+      <div class="card creator-box reveal">
         <div>
-          <h3 data-i18n="cr.t">Sei un golf creator?</h3>
+          <h3 class="display" data-i18n="cr.t">Sei un golf creator?</h3>
           <p data-i18n="cr.p">Stiamo costruendo il palinsesto insieme ai creator. Se ti piacerebbe vedere i tuoi video in TV, scrivici.</p>
         </div>
         <a class="btn btn-ghost js-creator" href="#" data-i18n="cr.btn">Scrivici</a>
@@ -413,6 +553,7 @@
     <span data-i18n="foot.note">Il nuovo canale di golf entertainment. Presto in Italia.</span>
     <span>© <span id="year"></span> Golf Club TV</span>
   </div>
+  <span class="wordmark" aria-hidden="true">GOLF CLUB TV</span>
 </footer>
 
 <script>
@@ -426,27 +567,97 @@
 
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Golf ball dimples
+  var REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var NS = "http://www.w3.org/2000/svg";
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function svgEl(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; }
+
+  // ---- Scene details: stars, treeline, mowing stripes ----
   (function () {
-    var g = document.getElementById("dimples"), ns = "http://www.w3.org/2000/svg";
-    for (var y = 50; y <= 340; y += 26) {
-      var off = ((y / 26) % 2) * 13;
-      for (var x = 40 + off; x <= 370; x += 26) {
-        var dx = x - 200, dy = y - 190, d = Math.sqrt(dx * dx + dy * dy);
-        if (d > 160) continue;
-        var s = Math.max(.35, 1 - (d / 170) * .6);
-        var c = document.createElementNS(ns, "ellipse");
-        c.setAttribute("cx", x); c.setAttribute("cy", y);
-        c.setAttribute("rx", 8 * s); c.setAttribute("ry", 7 * s);
-        g.appendChild(c);
-      }
+    var seed = 7; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    var stars = document.getElementById("stars");
+    for (var i = 0; i < 110; i++) {
+      var y = rnd() * 360, s = svgEl("circle", { cx: (rnd() * 1600).toFixed(0), cy: y.toFixed(0), r: (.5 + rnd() * 1.1).toFixed(2), opacity: ((.25 + rnd() * .7) * (1 - y / 420)).toFixed(2) }, stars);
+      if (i % 6 === 0) { s.setAttribute("class", "star"); s.style.animationDelay = (rnd() * 4).toFixed(1) + "s"; }
     }
+    function trees(id, base, min, max, step) {
+      var d = "M0 410 L0 " + base, x = 0;
+      while (x < 1600) { var w = step * (.6 + rnd() * .9), h = min + rnd() * (max - min); d += " Q" + (x + w / 2).toFixed(0) + " " + (base - h * 2).toFixed(0) + " " + (x + w).toFixed(0) + " " + (base - rnd() * 6).toFixed(0); x += w; }
+      document.getElementById(id).setAttribute("d", d + " L1600 410z");
+    }
+    trees("trees1", 398, 22, 46, 46); trees("trees2", 404, 10, 30, 34);
+    var st = document.getElementById("stripes");
+    for (var k = -9; k < 9; k += 2) svgEl("path", { d: "M1010 404 L" + (1010 + k * 250) + " 900 L" + (1010 + (k + 1) * 250) + " 900z" }, st);
   })();
 
-  var nav = document.getElementById("nav");
-  addEventListener("scroll", function () { nav.classList.toggle("scrolled", scrollY > 8); }, { passive: true });
+  // ---- Shot tracer ----
+  (function () {
+    var line = document.getElementById("trLine"), glow = document.getElementById("trGlow"), ball = document.getElementById("trBall"), tag = document.getElementById("trTag"), txt = document.getElementById("trTxt");
+    var shots = [
+      { d: "M960 900 C972 600 968 70 1034 118 C1064 142 1020 372 1013 438", m: 248 },
+      { d: "M960 900 C940 560 900 40 978 96 C1022 130 1016 360 1007 438", m: 263 },
+      { d: "M960 900 C974 640 990 210 1040 232 C1066 246 1024 392 1016 438", m: 231 }
+    ];
+    var idx = 0, len = 0, t0 = 0, running = false, visible = true;
+    function load() { var s = shots[idx]; line.setAttribute("d", s.d); glow.setAttribute("d", s.d); len = line.getTotalLength(); }
+    function frame(now) {
+      if (!visible) { running = false; return; }
+      var t = (now - t0) / 1000, s = shots[idx], FLY = 2.8, HOLD = 1.7, FADE = .6;
+      var u = clamp(t / FLY), e = 1 - Math.pow(1 - u, 2.4);
+      var dash = (len * e).toFixed(1) + " " + (len + 10);
+      line.setAttribute("stroke-dasharray", dash); glow.setAttribute("stroke-dasharray", dash);
+      var p = line.getPointAtLength(len * e), fade = t > FLY + HOLD ? 1 - clamp((t - FLY - HOLD) / FADE) : 1;
+      line.style.opacity = fade; glow.style.opacity = .16 * fade;
+      ball.setAttribute("cx", p.x); ball.setAttribute("cy", p.y); ball.setAttribute("r", (6.5 - 4.6 * e).toFixed(2)); ball.setAttribute("opacity", fade);
+      tag.setAttribute("transform", "translate(" + (p.x + 16).toFixed(1) + "," + (p.y - 18).toFixed(1) + ")"); tag.setAttribute("opacity", clamp(t * 3) * fade);
+      txt.textContent = Math.round(s.m * e) + " m";
+      if (t > FLY + HOLD + FADE + .5) { idx = (idx + 1) % shots.length; load(); t0 = now; }
+      requestAnimationFrame(frame);
+    }
+    function start() { if (running) return; running = true; t0 = performance.now(); requestAnimationFrame(frame); }
+    load();
+    if (REDUCED) { line.setAttribute("stroke-dasharray", "none"); glow.setAttribute("stroke-dasharray", "none"); return; }
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); }).observe(document.getElementById("stage"));
+    else start();
+  })();
 
-  if ("IntersectionObserver" in window) {
+  // ---- Hero → TV morph ----
+  (function () {
+    var root = document.documentElement, stage = document.getElementById("stage"), sticky = document.getElementById("sticky"), tv = document.getElementById("tv"), copy = document.getElementById("heroCopy"), intro = document.getElementById("cose"), nav = document.getElementById("nav");
+    var W, H, tx, ty, tw, th, ticking = false;
+    function layout() {
+      W = sticky.clientWidth; H = sticky.clientHeight;
+      if (W > 980) {
+        var wrapW = Math.min(1180, W) - 48, left = (W - wrapW) / 2;
+        tw = Math.min(wrapW * .56, (H - 220) * 16 / 9); th = tw * 9 / 16; tx = left + wrapW - tw; ty = (H - th) / 2 + 16;
+      } else {
+        var pad = W <= 760 ? 16 : 24;
+        tw = Math.min(W - pad * 2, (H * .42) * 16 / 9); th = tw * 9 / 16; tx = (W - tw) / 2; var top0 = W <= 760 ? 80 : 96; ty = Math.max(top0, Math.min(H * .16, (H - th - 34 - intro.offsetHeight) / 2));
+        intro.style.setProperty("--top", Math.round(ty + th + 34) + "px");
+      }
+      update();
+    }
+    function update() {
+      ticking = false;
+      nav.classList.toggle("scrolled", scrollY > 8);
+      if (REDUCED) return;
+      var total = stage.offsetHeight - H, p = clamp(-stage.getBoundingClientRect().top / total);
+      var u = clamp(p / .8), e = u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+      root.style.setProperty("--p", e.toFixed(4));
+      tv.style.width = (W + (tw - W) * e).toFixed(1) + "px"; tv.style.height = (H + (th - H) * e).toFixed(1) + "px";
+      tv.style.transform = "translate(" + (tx * e).toFixed(1) + "px," + (ty * e).toFixed(1) + "px)";
+      var o = 1 - clamp(p / .22);
+      copy.style.opacity = o; copy.style.transform = "translateY(" + (-p * 90).toFixed(1) + "px)"; copy.style.visibility = o < .02 ? "hidden" : "";
+      var io = clamp((p - .5) / .28);
+      intro.style.opacity = io; if (W > 980) intro.style.transform = "translateY(calc(-50% + " + ((1 - io) * 30).toFixed(1) + "px))"; else intro.style.transform = "translateY(" + ((1 - io) * 30).toFixed(1) + "px)";
+    }
+    addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    addEventListener("resize", layout);
+    layout();
+  })();
+
+  // ---- Reveal on scroll ----
+  if ("IntersectionObserver" in window && !REDUCED) {
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
     }, { threshold: .12 });
@@ -454,6 +665,70 @@
   } else {
     document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
   }
+
+  // ---- Card spotlight ----
+  document.querySelectorAll(".card").forEach(function (c) {
+    c.addEventListener("pointermove", function (ev) { var r = c.getBoundingClientRect(); c.style.setProperty("--mx", (ev.clientX - r.left) + "px"); c.style.setProperty("--my", (ev.clientY - r.top) + "px"); });
+  });
+
+  // ---- Statement: words light up as you scroll ----
+  var bandWords = [];
+  function litWords() {
+    if (!bandWords.length) return;
+    var r = document.getElementById("band").querySelector("blockquote").getBoundingClientRect(), vh = innerHeight;
+    var p = REDUCED ? 1 : clamp((vh * .82 - r.top) / (r.height + vh * .3));
+    var n = Math.round(p * bandWords.length * 1.05);
+    bandWords.forEach(function (w, i) { w.classList.toggle("on", i < n); });
+  }
+  function afterLang() {
+    bandWords = [];
+    document.querySelectorAll(".band blockquote [data-i18n]").forEach(function (el) {
+      var words = el.textContent.trim().split(/\s+/); el.textContent = "";
+      words.forEach(function (w) { var s = document.createElement("span"); s.className = "w"; s.textContent = w; el.appendChild(s); el.appendChild(document.createTextNode(" ")); bandWords.push(s); });
+    });
+    litWords();
+  }
+  addEventListener("scroll", litWords, { passive: true });
+
+  // ---- 3D golf ball ----
+  (function () {
+    var c = document.getElementById("ball3d"), ctx = c.getContext("2d"), pts = [], N = 340, ga = Math.PI * (3 - Math.sqrt(5));
+    for (var i = 0; i < N; i++) { var y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = ga * i; pts.push([Math.cos(th) * r, y, Math.sin(th) * r]); }
+    var size = 0, dpr = 1, ang = 0, tilt = .45, tiltT = .45, speed = .35, last = 0, visible = false, running = false;
+    function resize() { dpr = Math.min(devicePixelRatio || 1, 2); size = c.clientWidth; c.width = c.height = Math.round(size * dpr); draw(); }
+    function draw() {
+      if (!size) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, size, size);
+      var R = size * .39, cx = size / 2, cy = size / 2, g = ctx.createRadialGradient(cx - R * .38, cy - R * .42, R * .05, cx, cy, R);
+      g.addColorStop(0, "#fdfff2"); g.addColorStop(.45, "#e2f7a6"); g.addColorStop(.82, "#a3d163"); g.addColorStop(1, "#4d8f44");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 6.2832); ctx.fill();
+      var ca = Math.cos(ang), sa = Math.sin(ang), ct = Math.cos(tilt), st = Math.sin(tilt), rr = R * .062;
+      for (var i = 0; i < N; i++) {
+        var p = pts[i], x = p[0] * ca + p[2] * sa, z = -p[0] * sa + p[2] * ca, y = p[1] * ct - z * st, z2 = p[1] * st + z * ct;
+        if (z2 < .06) continue;
+        var sx = cx + x * R, sy = cy + y * R, a = Math.atan2(y, x);
+        ctx.save(); ctx.translate(sx, sy); ctx.rotate(a);
+        ctx.beginPath(); ctx.ellipse(0, 0, rr * z2, rr, 0, 0, 6.2832); ctx.fillStyle = "rgba(38,92,46," + (.3 * z2).toFixed(3) + ")"; ctx.fill();
+        ctx.rotate(-a);
+        ctx.beginPath(); ctx.ellipse(rr * .22, rr * .26, rr * z2 * .7, rr * .7, a, 0, 6.2832); ctx.fillStyle = "rgba(250,255,225," + (.3 * z2).toFixed(3) + ")"; ctx.fill();
+        ctx.restore();
+      }
+      var sh = ctx.createRadialGradient(cx - R * .3, cy - R * .35, R * .3, cx, cy, R);
+      sh.addColorStop(0, "rgba(6,22,12,0)"); sh.addColorStop(.7, "rgba(6,22,12,.12)"); sh.addColorStop(1, "rgba(6,22,12,.62)");
+      ctx.fillStyle = sh; ctx.beginPath(); ctx.arc(cx, cy, R + .5, 0, 6.2832); ctx.fill();
+    }
+    function loop(now) {
+      if (!visible) { running = false; return; }
+      var dt = Math.min(.05, (now - last) / 1000); last = now;
+      ang += speed * dt; tilt += (tiltT - tilt) * .06; speed += (.35 - speed) * .02;
+      draw(); requestAnimationFrame(loop);
+    }
+    addEventListener("resize", resize); resize();
+    if (REDUCED || !("IntersectionObserver" in window)) return;
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible && !running) { running = true; last = performance.now(); requestAnimationFrame(loop); } }).observe(c);
+    c.parentNode.addEventListener("pointermove", function (ev) { var r = c.getBoundingClientRect(); tiltT = .45 + ((ev.clientY - r.top) / r.height - .5) * .9; speed = .35 + ((ev.clientX - r.left) / r.width - .5) * 3; });
+    c.parentNode.addEventListener("pointerleave", function () { tiltT = .45; });
+  })();
 
   // ---- i18n (Italian is the default in the HTML) ----
   var EN_DICT = {
@@ -519,6 +794,7 @@
     document.documentElement.lang = l;
     document.querySelectorAll(".lang button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lang === l)); });
     updateCreatorLink();
+    afterLang();
     try { localStorage.setItem("gctv-lang", l); } catch (e) {}
   }
   document.querySelectorAll(".lang button").forEach(function (b) { b.addEventListener("click", function () { setLang(b.dataset.lang); }); });
